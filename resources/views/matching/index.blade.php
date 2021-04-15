@@ -34,55 +34,112 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between">
-                                    <h4 class="card-title">Projects</h4>
-                                    <a href="{{ url('projects/add') }}" class="btn btn-primary btn-sm">Add</a>
+                                    <h4 class="card-title">Matching</h4>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="controls">
+                                                        <label for="task_size">Task size</label>
+                                                        <select name="task_size" id="task_size" class="form-control">
+                                                            <option value="S">S</option>
+                                                            <option value="M">M</option>
+                                                            <option value="L">L</option>
+                                                            <option value="XL">XL</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="controls">
+                                                        <label for="task_size">Work experiences</label>
+                                                        <input type="number" class="form-control"
+                                                               placeholder="Work experiences"
+                                                               value="1"
+                                                               name="work_experiences" id="work_experiences">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <label for="period_date">Start and end date of task</label>
+                                                <fieldset class="form-group position-relative has-icon-left">
+                                                    <input type="text" class="form-control daterange"
+                                                           id="period_date" name="period_date"
+                                                           placeholder="Select Date">
+                                                    <div class="form-control-position">
+                                                        <i class='bx bx-calendar-check'></i>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                        <button type="submit"
+                                                class="btn btn-primary mb-3">Search
+                                        </button>
+                                        <hr>
                                         <div class="table-responsive">
                                             <table class="table zero-configuration">
                                                 <thead>
                                                 <tr>
-                                                    <th>Project name</th>
-                                                    <th>Task (s)</th>
-                                                    <th>Description</th>
+                                                    <th>Persons</th>
                                                     <th>Operations</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($results as $project)
-                                                    <tr>
-                                                        <td>{{ $project['project_name'] }}</td>
-                                                        <td>
-                                                            <a href="{{ url('projects/'.$project['id'].'/tasks') }}"
-                                                               type="button" class="btn btn-sm btn-primary">
-                                                                <i class="far fa-file-alt top-0"></i>
-                                                            </a>
-                                                        </td>
-                                                        <td>{{ $project['description'] }}</td>
-                                                        <td>
-                                                            <a href="{{ url('projects/edit/'.$project['id']) }}"
-                                                               type="button" class="btn btn-warning btn-sm">
-                                                                <i class="fas fa-pencil-alt top-0"></i>
-                                                            </a>
-                                                            <button onclick="deleteProject({{ $project['id'] }});"
-                                                                    type="button" class="btn btn-danger btn-sm">
-                                                                <i class="fas fa-trash top-0"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                                <tr>
+                                                    <td>John Doe</td>
+                                                    <td>
+                                                        <fieldset>
+                                                            <div class="radio">
+                                                                <input type="radio"
+                                                                       name="matching_person"
+                                                                       id="radio1">
+                                                                <label for="radio1"></label>
+                                                            </div>
+                                                        </fieldset>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Jane Foster</td>
+                                                    <td>
+                                                        <fieldset>
+                                                            <div class="radio">
+                                                                <input type="radio"
+                                                                       name="matching_person"
+                                                                       id="radio2">
+                                                                <label for="radio2"></label>
+                                                            </div>
+                                                        </fieldset>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Bob Miles</td>
+                                                    <td>
+                                                        <fieldset>
+                                                            <div class="radio">
+                                                                <input type="radio"
+                                                                       name="matching_person"
+                                                                       id="radio3">
+                                                                <label for="radio3"></label>
+                                                            </div>
+                                                        </fieldset>
+                                                    </td>
+                                                </tr>
                                                 </tbody>
                                                 <tfoot>
                                                 <tr>
-                                                    <th>Project name</th>
-                                                    <th>Task (s)</th>
-                                                    <th>Description</th>
+                                                    <th>Persons</th>
                                                     <th>Operations</th>
                                                 </tr>
                                                 </tfoot>
                                             </table>
                                         </div>
+                                        <a type="button" class="btn btn-danger">Cancel</a>
+                                        <button type="submit"
+                                                class="btn btn-primary">Matching
+                                        </button>
                                     </div>
                                 </div>
                             </div>
