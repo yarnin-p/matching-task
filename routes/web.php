@@ -55,7 +55,6 @@ Route::group([
 
 });
 
-
 Route::group([
     'middlewares' => ['web'],
     'prefix' => 'task-assigned'

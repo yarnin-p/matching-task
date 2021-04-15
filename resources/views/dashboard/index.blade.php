@@ -50,7 +50,7 @@
                                                 </thead>
                                                 <tbody>
                                                 <tr>
-                                                    <td>John Doe</td>
+                                                    <td>Sukanya</td>
                                                     <td>Create website</td>
                                                     <td>15/04/2021 - 16/04/2021</td>
                                                     <td>
@@ -60,7 +60,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Jan Froster</td>
+                                                    <td>Suchaphitchayakan</td>
                                                     <td>Build API</td>
                                                     <td>17/04/2021 - 21/04/2021</td>
                                                     <td>
@@ -70,7 +70,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Bob Miles</td>
+                                                    <td>Nujaree</td>
                                                     <td>Design database</td>
                                                     <td>22/04/2021 - 22/04/2021</td>
                                                     <td>

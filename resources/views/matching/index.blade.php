@@ -120,7 +120,7 @@
                                                 </thead>
                                                 <tbody>
                                                 <tr>
-                                                    <td>John Doe</td>
+                                                    <td>Chaloemchai</td>
                                                     <td>
                                                         <fieldset>
                                                             <div class="radio">
