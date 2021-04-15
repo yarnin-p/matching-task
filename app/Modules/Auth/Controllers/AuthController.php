@@ -31,7 +31,6 @@ class AuthController extends Controller
 
     public function login()
     {
-        dd('sss');
         return view('auth.login');
     }
 
@@ -58,9 +57,6 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * @return false|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
     public function logout() {
         try {
         Session::flush();
