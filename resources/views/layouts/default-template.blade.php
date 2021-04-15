@@ -87,8 +87,17 @@
                         <a class="dropdown-toggle nav-link dropdown-user-link"
                            href="#" data-toggle="dropdown">
                             <div class="user-nav d-sm-flex d-none">
-                                <span class="user-name">John Doe</span>
-                                <span class="user-status text-muted">Available</span>
+                                <span class="user-name">
+                                    @php
+                                        $userData = \Illuminate\Support\Facades\Session::get('user_data');
+                                    @endphp
+                                    @if($userData)
+                                        {{ $userData['firstname'] }}
+                                    @else
+                                        -
+                                    @endif
+                                </span>
+                                <span class="user-status text-muted">Online</span>
                             </div>
                             <span>
                                 <img class="round" src="{{ asset('assets/images/portrait/small/avatar-s-11.jpg') }}"
