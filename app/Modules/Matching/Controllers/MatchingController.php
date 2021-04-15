@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Project\Controllers;
+namespace App\Modules\Matching\Controllers;
 
 use App\Modules\Project\Repositories\ProjectRepository;
 use App\Modules\Task\Repositories\TaskRepository;

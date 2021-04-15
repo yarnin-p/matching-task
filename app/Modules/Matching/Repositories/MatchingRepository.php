@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Modules\Project\Repositories;
+namespace App\Modules\Macthing\Repositories;
 
-
-use App\Modules\Project\Interfaces\MatchingRepositoryInterface;
+use App\Modules\Matching\Interfaces\MatchingRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;

@@ -24,6 +24,13 @@ Route::group([
 
 Route::group([
     'middlewares' => ['web'],
+    'prefix' => 'home'
+], function () {
+    Route::get('/', '\App\Modules\Home\Controllers\HomeController@index');
+});
+
+Route::group([
+    'middlewares' => ['web'],
     'prefix' => 'projects'
 ], function () {
 
@@ -44,25 +51,6 @@ Route::group([
     'prefix' => 'matching'
 ], function () {
 
-    /* Project Routes */
     Route::get('/', '\App\Modules\Matching\Controllers\MatchingController@index');
-    Route::get('/{id}/tasks', '\App\Modules\Project\Controllers\ProjectController@detailView');
-    Route::get('/add', '\App\Modules\Project\Controllers\ProjectController@createView');
-    Route::get('/edit/{id}', '\App\Modules\Project\Controllers\ProjectController@editView');
-
-    /* Task Routes */
-    Route::get('/{projectId}/tasks/add', '\App\Modules\Task\Controllers\TaskController@taskCreateView');
-    Route::get('/{projectId}/tasks/{taskId}/edit', '\App\Modules\Task\Controllers\TaskController@taskEditView');
 
 });
-
-
-
-Route::group([
-    'middlewares' => ['web'],
-    'prefix' => 'home'
-], function () {
-    Route::get('/', '\App\Modules\Home\Controllers\HomeController@index');
-});
-
-
