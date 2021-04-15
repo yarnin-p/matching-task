@@ -57,3 +57,12 @@ Route::group([
 });
 
 
+
+Route::group([
+    'middlewares' => ['web'],
+    'prefix' => 'home'
+], function () {
+    Route::get('/', '\App\Modules\Home\Controllers\HomeController@index');
+});
+
+
