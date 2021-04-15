@@ -42,6 +42,37 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <div class="controls">
+                                                        <label for="tasks">Tasks</label>
+                                                        <select name="tasks" id="tasks" class="form-control">
+                                                            <option value="1">Create HTML mockup</option>
+                                                            <option value="2">Build web service</option>
+                                                            <option value="3">UI design</option>
+                                                            <option value="4">Design database</option>
+                                                            <option value="5">Create backoffice website</option>
+                                                            <option value="6">Config server</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="controls">
+                                                        <label for="skills">Skills</label>
+                                                        <select name="skills[]" id="skills" multiple class="form-control">
+                                                            <option value="PHP">PHP</option>
+                                                            <option value="HTML5">HTML5</option>
+                                                            <option value="CSS3">CSS3</option>
+                                                            <option value="Python">Python</option>
+                                                            <option value="Go">Go</option>
+                                                            <option value="DevOps">DevOps</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="controls">
                                                         <label for="task_size">Task size</label>
                                                         <select name="task_size" id="task_size" class="form-control">
                                                             <option value="S">S</option>
@@ -76,7 +107,7 @@
                                             </div>
                                         </div>
                                         <button type="submit"
-                                                class="btn btn-primary mb-3">Search
+                                                class="btn btn-primary mb-3">Match
                                         </button>
                                         <hr>
                                         <div class="table-responsive">
@@ -138,7 +169,7 @@
                                         </div>
                                         <a type="button" class="btn btn-danger">Cancel</a>
                                         <button type="submit"
-                                                class="btn btn-primary">Matching
+                                                class="btn btn-primary">Submit
                                         </button>
                                     </div>
                                 </div>
@@ -158,7 +189,7 @@
 @section('script')
     <script>
         $(document).ready(function () {
-
+            $('#skills').select2();
         });
 
 

@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/css/tables/datatable/datatables.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/css/pickers/pickadate/pickadate.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/css/pickers/daterange/daterangepicker.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -207,7 +208,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="{{ asset('assets/vendors/js/pickers/pickadate/picker.js') }}"></script>
 <script src="{{ asset('assets/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
 <script src="{{ asset('assets/vendors/js/pickers/pickadate/picker.time.js') }}"></script>
