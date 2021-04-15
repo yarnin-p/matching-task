@@ -31,6 +31,7 @@ class AuthController extends Controller
 
     public function login()
     {
+        dd('sss');
         return view('auth.login');
     }
 
