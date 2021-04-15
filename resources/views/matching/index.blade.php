@@ -132,32 +132,32 @@
                                                         </fieldset>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>Jane Foster</td>
-                                                    <td>
-                                                        <fieldset>
-                                                            <div class="radio">
-                                                                <input type="radio"
-                                                                       name="matching_person"
-                                                                       id="radio2">
-                                                                <label for="radio2"></label>
-                                                            </div>
-                                                        </fieldset>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Bob Miles</td>
-                                                    <td>
-                                                        <fieldset>
-                                                            <div class="radio">
-                                                                <input type="radio"
-                                                                       name="matching_person"
-                                                                       id="radio3">
-                                                                <label for="radio3"></label>
-                                                            </div>
-                                                        </fieldset>
-                                                    </td>
-                                                </tr>
+{{--                                                <tr>--}}
+{{--                                                    <td>Jane Foster</td>--}}
+{{--                                                    <td>--}}
+{{--                                                        <fieldset>--}}
+{{--                                                            <div class="radio">--}}
+{{--                                                                <input type="radio"--}}
+{{--                                                                       name="matching_person"--}}
+{{--                                                                       id="radio2">--}}
+{{--                                                                <label for="radio2"></label>--}}
+{{--                                                            </div>--}}
+{{--                                                        </fieldset>--}}
+{{--                                                    </td>--}}
+{{--                                                </tr>--}}
+{{--                                                <tr>--}}
+{{--                                                    <td>Bob Miles</td>--}}
+{{--                                                    <td>--}}
+{{--                                                        <fieldset>--}}
+{{--                                                            <div class="radio">--}}
+{{--                                                                <input type="radio"--}}
+{{--                                                                       name="matching_person"--}}
+{{--                                                                       id="radio3">--}}
+{{--                                                                <label for="radio3"></label>--}}
+{{--                                                            </div>--}}
+{{--                                                        </fieldset>--}}
+{{--                                                    </td>--}}
+{{--                                                </tr>--}}
                                                 </tbody>
                                                 <tfoot>
                                                 <tr>
