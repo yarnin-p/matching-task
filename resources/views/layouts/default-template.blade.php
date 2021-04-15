@@ -152,8 +152,8 @@
             <li class="navigation-header"><span>Menus</span></li>
             @foreach($menus as $menu)
                 <li class="nav-item
-                    {{ request()->is(strtolower($menu->sysMenu['menu_name']).'/*') || request()->is(strtolower($menu->sysMenu['menu_name'])) ? 'active' : '' }}">
-                    <a href="{{ url(strtolower($menu->sysMenu['menu_name'])) }}">
+                    {{ request()->is(strtolower($menu->sysMenu['class_name']).'/*') || request()->is(strtolower($menu->sysMenu['class_name'])) ? 'active' : '' }}">
+                    <a href="{{ url(strtolower($menu->sysMenu['class_name'])) }}">
                         <i class="fas {{ $menu->sysMenu['icon'] }}"></i>
                         <span class="menu-title"
                               data-i18n="{{ $menu->sysMenu['menu_name'] }}">{{ $menu->sysMenu['menu_name'] }}</span>

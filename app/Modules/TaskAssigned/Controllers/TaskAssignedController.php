@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Matching\Controllers;
+namespace App\Modules\TaskAssigned\Controllers;
 
 use App\Modules\Project\Repositories\ProjectRepository;
 use App\Modules\Task\Repositories\TaskRepository;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
 
-class MatchingController extends Controller
+class TaskAssignedController extends Controller
 {
     /**
      * @var ProjectRepository
@@ -21,7 +21,7 @@ class MatchingController extends Controller
     private $projectRepo, $taskRepo;
 
     /**
-     * ProjectController constructor.
+     * TaskController constructor.
      * @param ProjectRepository $projectRepository
      * @param TaskRepository $taskRepository
      */
@@ -34,6 +34,6 @@ class MatchingController extends Controller
 
     public function index(Request $request)
     {
-        return view('matching.index');
+        return view('task-assigned.index');
     }
 }

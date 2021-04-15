@@ -54,3 +54,18 @@ Route::group([
     Route::get('/', '\App\Modules\Matching\Controllers\MatchingController@index');
 
 });
+
+
+Route::group([
+    'middlewares' => ['web'],
+    'prefix' => 'task-assigned'
+], function () {
+    Route::get('/', '\App\Modules\TaskAssigned\Controllers\TaskAssignedController@index');
+});
+
+Route::group([
+    'middlewares' => ['web'],
+    'prefix' => 'dashboard'
+], function () {
+    Route::get('/', '\App\Modules\Dashboard\Controllers\DashboardController@index');
+});

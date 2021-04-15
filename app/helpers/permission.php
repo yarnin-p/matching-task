@@ -18,7 +18,7 @@ function displaySideNav()
     }
 
     return RoleMenuModel::with(['sysMenu' => function ($q) {
-        $q->select('menu_name', 'icon', 'id');
+        $q->select('class_name', 'icon', 'id', 'menu_name');
     }])->whereIn('role_id', $userRoleList)->get();
 }
 
