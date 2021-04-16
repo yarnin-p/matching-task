@@ -66,7 +66,7 @@
                                                 </div>
                                             </div>
                                             <a type="button" class="btn btn-danger"
-                                               href="{{ url('skill') }}">Cancel</a>
+                                               href="{{ url('skills') }}">Cancel</a>
                                             <button type="submit" onclick="createSkill(); return false;"
                                                     class="btn btn-primary">Save
                                             </button>
