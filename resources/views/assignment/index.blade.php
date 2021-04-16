@@ -55,6 +55,9 @@
                                                         <button type="button" class="btn btn-info btn-sm">
                                                             <i class="fas fa-search top-0"></i>
                                                         </button>
+                                                        <button type="button" class="btn btn-success btn-sm">
+                                                            End task
+                                                        </button>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -64,6 +67,9 @@
                                                         <button type="button" class="btn btn-info btn-sm">
                                                             <i class="fas fa-search top-0"></i>
                                                         </button>
+                                                        <button type="button" class="btn btn-success btn-sm">
+                                                            End task
+                                                        </button>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -72,6 +78,9 @@
                                                     <td>
                                                         <button type="button" class="btn btn-info btn-sm">
                                                             <i class="fas fa-search top-0"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-success btn-sm">
+                                                            End task
                                                         </button>
                                                     </td>
                                                 </tr>
