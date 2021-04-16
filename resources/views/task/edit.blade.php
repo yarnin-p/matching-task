@@ -61,7 +61,6 @@
                                                         <div class="controls">
                                                             <textarea class="form-control" name="description"
                                                                       id="description" placeholder="Description"
-                                                                      required
                                                                       rows="5"
                                                                       data-validation-required-message="This Project Description field is required">{{ $result['task']->description }}</textarea>
                                                         </div>
@@ -79,7 +78,7 @@
                                                 </div>
                                             </div>
                                             <a type="button" class="btn btn-danger"
-                                               href="{{ url('projects/'.$result['project']->id.'/tasks/'.$result['task']->id.'/delete') }}">Cancel</a>
+                                               href="{{ url('projects/'.$result['project']->id.'/tasks/') }}">Cancel</a>
                                             <button type="submit"
                                                     onclick="updateTask(); return false;"
                                                     class="btn btn-primary">Save

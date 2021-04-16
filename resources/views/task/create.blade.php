@@ -62,7 +62,6 @@
                                                         <div class="controls">
                                                             <textarea class="form-control" name="description"
                                                                       id="description" placeholder="Description"
-                                                                      required
                                                                       rows="5"
                                                                       data-validation-required-message="This Task Description field is required"></textarea>
                                                         </div>

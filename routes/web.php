@@ -38,7 +38,7 @@ Route::group([
     Route::get('/', '\App\Modules\Project\Controllers\ProjectController@index');
     Route::get('/{id}/tasks', '\App\Modules\Project\Controllers\ProjectController@detailView');
     Route::get('/add', '\App\Modules\Project\Controllers\ProjectController@createView');
-    Route::get('/edit/{id}', '\App\Modules\Project\Controllers\ProjectController@editView');
+    Route::get('/{id}/edit', '\App\Modules\Project\Controllers\ProjectController@editView');
 
     /* Task Routes */
     Route::get('/{projectId}/tasks/add', '\App\Modules\Task\Controllers\TaskController@taskCreateView');
@@ -57,9 +57,9 @@ Route::group([
 
 Route::group([
     'middlewares' => ['web'],
-    'prefix' => 'task-assigned'
+    'prefix' => 'assignment'
 ], function () {
-    Route::get('/', '\App\Modules\TaskAssigned\Controllers\TaskAssignedController@index');
+    Route::get('/', '\App\Modules\Assignment\Controllers\AssignmentController@index');
 });
 
 Route::group([
@@ -67,4 +67,14 @@ Route::group([
     'prefix' => 'dashboard'
 ], function () {
     Route::get('/', '\App\Modules\Dashboard\Controllers\DashboardController@index');
+});
+
+Route::group([
+    'middlewares' => ['web'],
+    'prefix' => 'skills'
+], function () {
+    Route::get('/', '\App\Modules\Skill\Controllers\SkillController@index');
+    Route::get('/add', '\App\Modules\Skill\Controllers\SkillController@createView');
+    Route::get('/{id}/edit', '\App\Modules\Skill\Controllers\SkillController@editView');
+
 });

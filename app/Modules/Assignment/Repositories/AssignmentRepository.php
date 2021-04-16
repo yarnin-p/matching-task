@@ -2,7 +2,7 @@
 
 namespace App\Modules\TaskAssigned\Repositories;
 
-use App\Modules\TaskAssigned\Interfaces\TaskAssignedRepositoryInterface;
+use App\Modules\Assignment\Interfaces\AssignmentRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -13,6 +13,6 @@ use App\Models\ProjectModel;
 use App\Models\TaskModel;
 
 
-class TaskAssignedRepository implements TaskAssignedRepositoryInterface
+class AssignmentRepository implements AssignmentRepositoryInterface
 {
 }

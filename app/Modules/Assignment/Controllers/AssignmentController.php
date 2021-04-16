@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\TaskAssigned\Controllers;
+namespace App\Modules\Assignment\Controllers;
 
 use App\Modules\Project\Repositories\ProjectRepository;
 use App\Modules\Task\Repositories\TaskRepository;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
 
-class TaskAssignedController extends Controller
+class AssignmentController extends Controller
 {
     /**
      * @var ProjectRepository
@@ -34,6 +34,6 @@ class TaskAssignedController extends Controller
 
     public function index(Request $request)
     {
-        return view('task-assigned.index');
+        return view('assignment.index');
     }
 }

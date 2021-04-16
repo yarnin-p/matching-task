@@ -32,11 +32,21 @@ Route::group([
     'prefix' => 'v1/projects'
 ], function () {
     Route::post('/add', '\App\Modules\Project\Controllers\ProjectController@create');
-    Route::post('/edit/{id}', '\App\Modules\Project\Controllers\ProjectController@update');
-    Route::post('/delete/{id}', '\App\Modules\Project\Controllers\ProjectController@delete');
+    Route::post('/{id}/edit', '\App\Modules\Project\Controllers\ProjectController@update');
+    Route::post('/{id}/delete/', '\App\Modules\Project\Controllers\ProjectController@delete');
 
     Route::post('/{projectId}/tasks/add', '\App\Modules\Task\Controllers\TaskController@create');
     Route::post('/{projectId}/tasks/{taskId}/edit', '\App\Modules\Task\Controllers\TaskController@update');
     Route::post('/{projectId}/tasks/{taskId}/delete', '\App\Modules\Task\Controllers\TaskController@delete');
 
+});
+
+
+Route::group([
+    'middlewares' => ['web'],
+    'prefix' => 'v1/skills'
+], function () {
+    Route::post('/add', '\App\Modules\Skill\Controllers\SkillController@create');
+    Route::post('/{id}/edit', '\App\Modules\Skill\Controllers\SkillController@update');
+    Route::post('/{id}/delete', '\App\Modules\Skill\Controllers\SkillController@delete');
 });

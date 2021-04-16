@@ -19,7 +19,7 @@ class SkillModel extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'name', 'desc', 'created_at', 'updated_at', 'deleted_at'
+        'id', 'skill_name', 'description', 'created_at', 'updated_at', 'deleted_at'
     ];
 
     /**

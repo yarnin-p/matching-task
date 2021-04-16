@@ -3,6 +3,7 @@
 namespace App\Modules\Skill\Repositories;
 
 
+use App\Models\SkillModel;
 use App\Modules\Skill\Interfaces\SkillRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
@@ -10,45 +11,101 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-use App\Models\UserModel;
 
 
 class SkillRepository implements SkillRepositoryInterface
 {
     /**
-     * @var UserModel
+     * @var SkillModel
      */
-    private $userModel;
+    private $skillModel;
 
     /**
-     * AuthRepository constructor.
-     * @param UserModel $_userModel
+     * SkillRepository constructor.
+     * @param SkillModel $skillModel
      */
-    public function __construct(UserModel $_userModel)
+    public function __construct(SkillModel $skillModel)
     {
         DB::enableQueryLog();
 //        var_dump(DB::getQueryLog());exit();
-        $this->userModel = $_userModel;
+        $this->skillModel = $skillModel;
     }
 
-    public function checkLogin(Request $request)
+    /**
+     * @param Request $request
+     * @return array|false|mixed
+     */
+    public function getAllSkills(Request $request)
     {
         try {
-            $email = $request->input('email');
-            $password = $request->input('password');
-            $user = $this->userModel::where('users.email', '=', $email)
-                ->where('users.password', '=', $password)
-                ->leftJoin('user_roles', 'users.id', '=', 'user_roles.user_id')
-                ->leftJoin('roles', 'user_roles.role_id', '=', 'roles.id')
-                ->select('users.*', 'roles.role_name')->get();
-            if ($user->isNotEmpty()) {
-                $request->session()->put('user_data', $user->toArray());
-                return TRUE;
-            }
-            $request->session()->put('user_data', []);
-            return FALSE;
+            return $this->skillModel::all()->toArray();
         } catch (\Exception $e) {
-            Log::error('AuthRepository@checkLogin: [' . $e->getCode() . '] ' . $e->getMessage());
+            Log::error('SkillRepository@getAllSkills: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
+    }
+
+    /**
+     * @param $id
+     * @return false|mixed
+     */
+    public function getSkill($id)
+    {
+        try {
+            return $this->skillModel::find($id);
+        } catch (\Exception $e) {
+            Log::error('SkillRepository@getSkill: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
+    }
+
+
+    /**
+     * @param Request $request
+     * @return false
+     */
+    public function createSkill(Request $request)
+    {
+        try {
+            $input['skill_name'] = trim($request->input('skill_name'));
+            $input['description'] = $request->input('description') ? $request->input('description') : "";
+
+            return $this->skillModel::insert($input);
+        } catch (\Exception $e) {
+            Log::error('SkillRepository@createSkill: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
+    }
+
+    /**
+     * @param $id
+     * @param Request $request
+     * @return bool
+     */
+    public function updateSkill($id, Request $request)
+    {
+        try {
+            $input['description'] = $request->input('description') ? $request->input('description') : "";
+            $skill = $this->skillModel::find($id);
+            $skill->skill_name = trim($request->input('skill_name'));
+            $skill->description = $request->input('description');
+            return $skill->save();;
+        } catch (\Exception $e) {
+            Log::error('SkillRepository@updateSkill: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
+    }
+
+    /**
+     * @param $id
+     * @return false|mixed
+     */
+    public function deleteSkill($id)
+    {
+        try {
+            return $this->skillModel::where('id', $id)->delete();
+        } catch (\Exception $e) {
+            Log::error('SkillRepository@deleteSkill: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
         }
     }

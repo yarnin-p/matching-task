@@ -2,7 +2,7 @@
 
 
 @section('title')
-    Project
+    Skills
 @endsection
 
 
@@ -15,13 +15,13 @@
                 <div class="content-header-left col-12 mb-2 mt-1">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h5 class="content-header-title float-left pr-1 mb-0">Projects</h5>
+                            <h5 class="content-header-title float-left pr-1 mb-0">Skills</h5>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item"><a href="{{ url('/projects') }}"><i
+                                    <li class="breadcrumb-item"><a href="{{ url('/skills') }}"><i
                                                 class="bx bx-home-alt"></i></a>
                                     </li>
-                                    <li class="breadcrumb-item"><a href="#">Add Project</a>
+                                    <li class="breadcrumb-item"><a href="#">Edit Skill</a>
                                     </li>
                                 </ol>
                             </div>
@@ -37,20 +37,21 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Project form</h4>
+                                    <h4 class="card-title">Edit skill form</h4>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <p class="mt-1">Add project</p>
+                                        <p class="mt-1">Edit skill</p>
                                         <form class="form-horizontal">
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="form-group">
                                                         <div class="controls">
-                                                            <input type="text" name="project_name" id="project_name"
+                                                            <input type="text" name="skill_name" id="skill_name"
                                                                    class="form-control"
-                                                                   placeholder="Project Name" required
-                                                                   data-validation-required-message="This Project Name field is required">
+                                                                   placeholder="Skill Name" required
+                                                                   value="{{ $result->skill_name }}"
+                                                                   data-validation-required-message="This Skill Name field is required">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -59,15 +60,15 @@
                                                         <div class="controls">
                                                             <textarea class="form-control" name="description"
                                                                       id="description" placeholder="Description"
-                                                                      rows="5"
-                                                                      data-validation-required-message="This Project Description field is required"></textarea>
+                                                                      rows="5">{{ $result->description }}</textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <a type="button" class="btn btn-danger"
-                                               href="{{ url('projects') }}">Cancel</a>
-                                            <button type="submit" onclick="createProject(); return false;"
+                                               href="{{ url('skills') }}">Cancel</a>
+                                            <button type="submit"
+                                                    onclick="updateSkill(); return false;"
                                                     class="btn btn-primary">Save
                                             </button>
                                         </form>
@@ -90,22 +91,21 @@
 @section('script')
     <script>
         $(document).ready(function () {
-
         });
 
 
-        async function createProject() {
+        async function updateSkill() {
             let data = {
-                project_name: $('#project_name').val(),
+                skill_name: $('#skill_name').val(),
                 description: $('#description').val()
             }
-            let response = await postData('{{ url('api/v1/projects/add') }}', data, 'POST')
+            let response = await postData('{{ url('api/v1/skills/'.$result->id.'/edit/') }}', data, 'POST')
             if (response.success) {
-                location.href = '{{ url('projects') }}';
+                location.href = '{{ url('skills/') }}';
             } else {
                 Swal.fire({
-                    title: 'Projects',
-                    text: "Create project failed!: " + JSON.stringify(response.message),
+                    title: 'Skill',
+                    text: "Update skill failed!: " + JSON.stringify(response.message),
                     icon: 'warning',
                     showCancelButton: false,
                     confirmButtonColor: '#3085d6',
