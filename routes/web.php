@@ -78,3 +78,14 @@ Route::group([
     Route::get('/{id}/edit', '\App\Modules\Skill\Controllers\SkillController@editView');
 
 });
+
+
+Route::group([
+    'middlewares' => ['web'],
+    'prefix' => 'work-experiences'
+], function () {
+    Route::get('/', '\App\Modules\WorkExperience\Controllers\WorkExperienceController@index');
+    Route::get('/add', '\App\Modules\WorkExperience\Controllers\WorkExperienceController@createView');
+    Route::get('/{id}/edit', '\App\Modules\WorkExperience\Controllers\WorkExperienceController@editView');
+
+});
