@@ -41,7 +41,6 @@ Route::group([
 
 });
 
-
 Route::group([
     'middlewares' => ['web'],
     'prefix' => 'v1/skills'
@@ -49,4 +48,13 @@ Route::group([
     Route::post('/add', '\App\Modules\Skill\Controllers\SkillController@create');
     Route::post('/{id}/edit', '\App\Modules\Skill\Controllers\SkillController@update');
     Route::post('/{id}/delete', '\App\Modules\Skill\Controllers\SkillController@delete');
+});
+
+Route::group([
+    'middlewares' => ['web'],
+    'prefix' => 'v1/menus'
+], function () {
+    Route::post('/add', '\App\Modules\Menu\Controllers\MenuController@create');
+    Route::post('/{id}/edit', '\App\Modules\Menu\Controllers\MenuController@update');
+    Route::post('/{id}/delete', '\App\Modules\Menu\Controllers\MenuController@delete');
 });

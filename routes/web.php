@@ -76,6 +76,15 @@ Route::group([
     Route::get('/', '\App\Modules\Skill\Controllers\SkillController@index');
     Route::get('/add', '\App\Modules\Skill\Controllers\SkillController@createView');
     Route::get('/{id}/edit', '\App\Modules\Skill\Controllers\SkillController@editView');
+});
+
+Route::group([
+    'middlewares' => ['web'],
+    'prefix' => 'menus'
+], function () {
+    Route::get('/', '\App\Modules\Menu\Controllers\MenuController@index');
+    Route::get('/add', '\App\Modules\Menu\Controllers\MenuController@createView');
+    Route::get('/{id}/edit', '\App\Modules\Menu\Controllers\MenuController@editView');
 
 });
 
@@ -87,5 +96,4 @@ Route::group([
     Route::get('/', '\App\Modules\WorkExperience\Controllers\WorkExperienceController@index');
     Route::get('/add', '\App\Modules\WorkExperience\Controllers\WorkExperienceController@createView');
     Route::get('/{id}/edit', '\App\Modules\WorkExperience\Controllers\WorkExperienceController@editView');
-
 });
