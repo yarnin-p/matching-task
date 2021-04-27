@@ -34,18 +34,6 @@ class QAController extends Controller
                             ->where('qa_skills.user_id', $user->id)
                             ->get();
 
-//        return $skills;
-
         return view('qa.index', compact('experiences', 'skills'));
-    }
-
-    public function deleteSkill($id)
-    {
-
-    }
-
-    public function deleteWorkExperience($id)
-    {
-
     }
 }
