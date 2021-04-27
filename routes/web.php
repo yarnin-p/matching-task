@@ -97,3 +97,17 @@ Route::group([
     Route::get('/add', '\App\Modules\WorkExperience\Controllers\WorkExperienceController@createView');
     Route::get('/{id}/edit', '\App\Modules\WorkExperience\Controllers\WorkExperienceController@editView');
 });
+
+
+Route::group([
+    'middlewares' => ['web'],
+    'prefix' => 'qa'
+], function () {
+    Route::get('/', '\App\Modules\QA\Controllers\QAController@index');
+    Route::get('/skill/edit', '\App\Modules\QA\Controllers\SkillController@getEdit');
+    Route::post('/skill/edit', '\App\Modules\QA\Controllers\SkillController@postEdit');
+    Route::get('/skill/delete', '\App\Modules\QA\Controllers\SkillController@delete');
+    Route::get('/work-experience/edit/{id?}', '\App\Modules\QA\Controllers\WorkExperienceController@getEdit');
+    Route::post('/work-experience/edit/{id?}', '\App\Modules\QA\Controllers\WorkExperienceController@postEdit');
+    Route::get('/work-experience/delete', '\App\Modules\QA\Controllers\WorkExperienceController@delete');
+});
