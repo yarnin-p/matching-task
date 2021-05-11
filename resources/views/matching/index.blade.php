@@ -59,7 +59,8 @@
                                                 <div class="form-group">
                                                     <div class="controls">
                                                         <label for="skills">Skills</label>
-                                                        <select name="skills[]" id="skills" multiple class="form-control">
+                                                        <select name="skills[]" id="skills" multiple
+                                                                class="form-control">
                                                             <option value="PHP">PHP</option>
                                                             <option value="HTML5">HTML5</option>
                                                             <option value="CSS3">CSS3</option>
@@ -106,7 +107,7 @@
                                                 </fieldset>
                                             </div>
                                         </div>
-                                        <button type="submit"
+                                        <button type="button" onclick="search();"
                                                 class="btn btn-primary mb-3">Match
                                         </button>
                                         <hr>
@@ -132,32 +133,6 @@
                                                         </fieldset>
                                                     </td>
                                                 </tr>
-{{--                                                <tr>--}}
-{{--                                                    <td>Jane Foster</td>--}}
-{{--                                                    <td>--}}
-{{--                                                        <fieldset>--}}
-{{--                                                            <div class="radio">--}}
-{{--                                                                <input type="radio"--}}
-{{--                                                                       name="matching_person"--}}
-{{--                                                                       id="radio2">--}}
-{{--                                                                <label for="radio2"></label>--}}
-{{--                                                            </div>--}}
-{{--                                                        </fieldset>--}}
-{{--                                                    </td>--}}
-{{--                                                </tr>--}}
-{{--                                                <tr>--}}
-{{--                                                    <td>Bob Miles</td>--}}
-{{--                                                    <td>--}}
-{{--                                                        <fieldset>--}}
-{{--                                                            <div class="radio">--}}
-{{--                                                                <input type="radio"--}}
-{{--                                                                       name="matching_person"--}}
-{{--                                                                       id="radio3">--}}
-{{--                                                                <label for="radio3"></label>--}}
-{{--                                                            </div>--}}
-{{--                                                        </fieldset>--}}
-{{--                                                    </td>--}}
-{{--                                                </tr>--}}
                                                 </tbody>
                                                 <tfoot>
                                                 <tr>
@@ -193,34 +168,27 @@
         });
 
 
-        async function deleteProject(id) {
-            let data = {}
-            Swal.fire({
-                title: 'Projects',
-                text: "Are you want to delete project record?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Delete'
-            }).then(async function (result) {
-                if (result.value) {
-                    let response = await postData('{{ url('api/v1/projects/delete') }}/' + id, data, 'POST');
-                    if (response.success) {
-                        location.href = '{{ url('projects') }}';
-                    } else {
-                        Swal.fire({
-                            title: 'Projects',
-                            text: "Something went wrong!",
-                            icon: 'warning',
-                            showCancelButton: false,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Ok'
-                        })
-                    }
-                }
-            });
+        async function search() {
+            let data = {
+                skills: $('#skills').val(),
+                experience: $('#work_experiences').val(),
+                period_date: $('#period_date').val(),
+                task_size: $('#task_size').val(),
+            }
+            let response = await postData('{{ url('api/v1/matching/search') }}', data, 'POST');
+            if (response.success) {
+                location.href = '{{ url('matching') }}';
+            } else {
+                Swal.fire({
+                    title: 'Matching',
+                    text: "Something went wrong!",
+                    icon: 'warning',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok'
+                })
+            }
         }
 
     </script>

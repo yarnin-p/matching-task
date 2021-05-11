@@ -36,4 +36,9 @@ class MatchingController extends Controller
     {
         return view('matching.index');
     }
+
+
+    public function search(Request $request) {
+        dd($request->all());
+    }
 }

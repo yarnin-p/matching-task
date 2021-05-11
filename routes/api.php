@@ -58,3 +58,11 @@ Route::group([
     Route::post('/{id}/edit', '\App\Modules\Menu\Controllers\MenuController@update');
     Route::post('/{id}/delete', '\App\Modules\Menu\Controllers\MenuController@delete');
 });
+
+
+Route::group([
+    'middlewares' => ['web'],
+    'prefix' => 'v1/matching'
+], function () {
+    Route::post('/search', '\App\Modules\Matching\Controllers\MatchingController@search');
+});
