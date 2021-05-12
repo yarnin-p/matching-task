@@ -90,4 +90,18 @@ class MatchingRepository implements MatchingRepositoryInterface
         }
     }
 
+    public function saveMatching(Request $request)
+    {
+        try {
+            $input['task_id'] = $request->input('task_id');
+            $input['qa_id'] = $request->input('qa_id');
+            $input['status'] = 'process';
+            $input['created_at'] = date('Y-m-d H:i:s');
+
+            return $this->qaTaskModel::create($input);
+        } catch (\Exception $e) {
+            Log::error('MatchingRepository@saveMatching: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
+    }
 }

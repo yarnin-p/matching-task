@@ -2,6 +2,7 @@
 
 namespace App\Modules\Assignment\Controllers;
 
+use App\Modules\Assignment\Repositories\AssignmentRepository;
 use App\Modules\Project\Repositories\ProjectRepository;
 use App\Modules\Task\Repositories\TaskRepository;
 use Illuminate\Http\Request;
@@ -19,22 +20,21 @@ class AssignmentController extends Controller
     /**
      * @var ProjectRepository
      */
-    private $projectRepo, $taskRepo;
+    private $assignmentRepo;
 
     /**
      * TaskController constructor.
      * @param ProjectRepository $projectRepository
      * @param TaskRepository $taskRepository
      */
-    public function __construct(ProjectRepository $projectRepository, TaskRepository $taskRepository)
+    public function __construct(AssignmentRepository $assignmentRepo)
     {
-        $this->projectRepo = $projectRepository;
-        $this->taskRepo = $taskRepository;
+        $this->assignmentRepo = $assignmentRepo;
     }
-
 
     public function index(Request $request)
     {
-        return view('assignment.index');
+        $resultTasks = $this->assignmentRepo->getAllAssignmentTasks($request);
+        return view('assignment.index', compact('resultTasks'));
     }
 }

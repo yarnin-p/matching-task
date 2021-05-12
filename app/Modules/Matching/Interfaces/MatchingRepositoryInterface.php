@@ -10,4 +10,10 @@ interface MatchingRepositoryInterface
      * @return mixed
      */
     public function searchQA(Request $request);
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function saveMatching(Request $request);
 }

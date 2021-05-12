@@ -74,4 +74,5 @@ Route::group([
     'prefix' => 'v1/matching'
 ], function () {
     Route::post('/search', '\App\Modules\Matching\Controllers\MatchingController@search');
+    Route::post('/save', '\App\Modules\Matching\Controllers\MatchingController@save');
 });

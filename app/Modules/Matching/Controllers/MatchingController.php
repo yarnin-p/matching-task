@@ -62,4 +62,15 @@ class MatchingController extends Controller
             return responseError(500, 500, 'Something went wrong!', []);
         }
     }
+
+    public function save(Request $request)
+    {
+        try {
+            $results = $this->matchingRepo->saveMatching($request);
+            return responseSuccess(201, 201, 'Successfully', $request);
+        } catch (\Exception $e) {
+            Log::error('MatchingController@save: [' . $e->getCode() . '] ' . $e->getMessage());
+            return responseError(500, 500, 'Something went wrong!', []);
+        }
+    }
 }

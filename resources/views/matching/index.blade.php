@@ -124,31 +124,34 @@
                                                 class="btn btn-primary mb-3">Match
                                         </button>
                                         <hr>
-                                        <div class="table-responsive">
-                                            <table class="table zero-configuration">
-                                                <thead>
-                                                <tr>
-                                                    <th>Persons</th>
-                                                    <th>Operations</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="qa_list">
-                                                <tr>
-                                                    <td colspan="2" class="text-center">No data found!</td>
-                                                </tr>
-                                                </tbody>
-                                                <tfoot>
-                                                <tr>
-                                                    <th>Persons</th>
-                                                    <th>Operations</th>
-                                                </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                        <a type="button" class="btn btn-danger">Cancel</a>
-                                        <button type="submit"
-                                                class="btn btn-primary">Submit
-                                        </button>
+                                        <form>
+                                            <div class="table-responsive">
+                                                <table class="table zero-configuration">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Persons</th>
+                                                        <th>Operations</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="qa_list">
+                                                    <tr>
+                                                        <td colspan="2" class="text-center">No data found!</td>
+                                                    </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                    <tr>
+                                                        <th>Persons</th>
+                                                        <th>Operations</th>
+                                                    </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                            <button type="reset" class="btn btn-danger">Cancel</button>
+                                            <button type="button"
+                                                    onclick="saveMatching();"
+                                                    class="btn btn-primary">Submit
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -195,6 +198,7 @@
                         elem += `<fieldset>`;
                         elem += `<div class="radio">`;
                         elem += `<input type="radio"
+                                               value="${row.id}"
                                                name="matching_person"
                                                id="radio1">
                                             <label for="radio1"></label>`;
@@ -235,6 +239,45 @@
                     elem += `<option value='' disabled>No task found!</option>`;
                 }
                 $('#tasks').empty().append(elem);
+            } else {
+                Swal.fire({
+                    title: 'Matching',
+                    text: "Something went wrong!",
+                    icon: 'warning',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok'
+                })
+            }
+        }
+
+
+        async function saveMatching() {
+            let qa_data = $('input[name="matching_person"]')[0].value
+            let data = {
+                task_id: $('#tasks').val(),
+                qa_id: qa_data
+            }
+
+            let response = await postData('{{ url('api/v1/matching/save') }}', data, 'POST');
+            if (response.success) {
+                Swal.fire({
+                    title: 'Matching',
+                    text: "Matching successfully!",
+                    icon: 'success',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false
+                }).then(function(result) {
+                    if (result.value) {
+                        location.reload();
+                    } else {
+                        location.reload();
+                    }
+                });
             } else {
                 Swal.fire({
                     title: 'Matching',
