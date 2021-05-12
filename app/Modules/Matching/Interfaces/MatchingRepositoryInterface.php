@@ -1,7 +1,13 @@
 <?php
-namespace App\Modules\Macthing\Interfaces;
+
+namespace App\Modules\Matching\Interfaces;
 use Illuminate\Http\Request;
 
 interface MatchingRepositoryInterface
 {
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function searchQA(Request $request);
 }

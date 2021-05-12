@@ -41,6 +41,15 @@ Route::group([
 
 });
 
+
+Route::group([
+    'middlewares' => ['web'],
+    'prefix' => 'v1/tasks'
+], function () {
+    Route::get('/project/{projectId}', '\App\Modules\Task\Controllers\TaskController@getTaskBySelectedProject');
+});
+
+
 Route::group([
     'middlewares' => ['web'],
     'prefix' => 'v1/skills'

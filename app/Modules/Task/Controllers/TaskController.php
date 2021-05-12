@@ -66,7 +66,7 @@ class TaskController extends Controller
         if ($project) {
             $tasks = $this->taskRepo->getAllTasksByProject($project->id);
             if ($tasks) {
-                return view('project.detail', compact('$tasks'));
+                return view('project.detail', compact('tasks'));
             } else {
                 redirect('projects');
             }
@@ -136,6 +136,23 @@ class TaskController extends Controller
         } catch (\Exception $e) {
             Log::error('TaskController@delete: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
+        }
+    }
+
+
+    public function getTaskBySelectedProject($projectId, Request $request)
+    {
+        try {
+
+            if (!$projectId) {
+                return responseError(422, 422, 'Project id not found!', []);
+            }
+
+            $tasks = $this->taskRepo->getAllTasksByProject($request, $projectId);
+            return responseSuccess(200, 200, 'Successfully', $tasks);
+        } catch (\Exception $e) {
+            Log::error('TaskController@getTaskBySelectedProject: [' . $e->getCode() . '] ' . $e->getMessage());
+            return responseError(500, 500, 'Something went wrong!', []);
         }
     }
 }

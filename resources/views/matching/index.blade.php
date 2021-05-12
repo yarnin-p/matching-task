@@ -42,14 +42,26 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <div class="controls">
+                                                        <label for="projects">Projects</label>
+                                                        <select name="projects" id="projects"
+                                                                onchange="getTaskBySelectedProject(this);"
+                                                                class="form-control">
+                                                            <option value=""></option>
+                                                            @forelse($projects as $project)
+                                                                <option
+                                                                    value="{{ $project['id'] }}">{{ $project['project_name'] }}</option>
+                                                            @empty
+                                                                <option value="">No project found!</option>
+                                                            @endforelse
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="controls">
                                                         <label for="tasks">Tasks</label>
                                                         <select name="tasks" id="tasks" class="form-control">
-                                                            <option value="1">Create HTML mockup</option>
-                                                            <option value="2">Build web service</option>
-                                                            <option value="3">UI design</option>
-                                                            <option value="4">Design database</option>
-                                                            <option value="5">Create backoffice website</option>
-                                                            <option value="6">Config server</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -61,12 +73,12 @@
                                                         <label for="skills">Skills</label>
                                                         <select name="skills[]" id="skills" multiple
                                                                 class="form-control">
-                                                            <option value="PHP">PHP</option>
-                                                            <option value="HTML5">HTML5</option>
-                                                            <option value="CSS3">CSS3</option>
-                                                            <option value="Python">Python</option>
-                                                            <option value="Go">Go</option>
-                                                            <option value="DevOps">DevOps</option>
+                                                            @forelse($skills as $skill)
+                                                                <option
+                                                                    value="{{ $skill['id'] }}">{{ $skill['skill_name'] }}</option>
+                                                            @empty
+                                                                <option value="">No skill found!</option>
+                                                            @endforelse
                                                         </select>
                                                     </div>
                                                 </div>
@@ -91,6 +103,7 @@
                                                         <input type="number" class="form-control"
                                                                placeholder="Work experiences"
                                                                value="1"
+                                                               oninput="return isNumberKey(event)"
                                                                name="work_experiences" id="work_experiences">
                                                     </div>
                                                 </div>
@@ -119,19 +132,9 @@
                                                     <th>Operations</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="qa_list">
                                                 <tr>
-                                                    <td>Chaloemchai</td>
-                                                    <td>
-                                                        <fieldset>
-                                                            <div class="radio">
-                                                                <input type="radio"
-                                                                       name="matching_person"
-                                                                       id="radio1">
-                                                                <label for="radio1"></label>
-                                                            </div>
-                                                        </fieldset>
-                                                    </td>
+                                                    <td colspan="2" class="text-center">No data found!</td>
                                                 </tr>
                                                 </tbody>
                                                 <tfoot>
@@ -165,19 +168,73 @@
     <script>
         $(document).ready(function () {
             $('#skills').select2();
+            $('#projects').select2({
+                width: '100%',
+                placeholder: '-- Choose Project --'
+            })
         });
 
 
         async function search() {
+            let elem = '';
             let data = {
                 skills: $('#skills').val(),
                 experience: $('#work_experiences').val(),
                 period_date: $('#period_date').val(),
                 task_size: $('#task_size').val(),
+                project_id: $('#projects').val(),
+                task: $('#tasks').val()
             }
             let response = await postData('{{ url('api/v1/matching/search') }}', data, 'POST');
             if (response.success) {
-                location.href = '{{ url('matching') }}';
+                if (response.data.length > 0) {
+                    [...response.data].map((row, index) => {
+                        elem += `<tr>`;
+                        elem += `<td>${row.firstname} ${row.lastname}</td>`;
+                        elem += `<td>`;
+                        elem += `<fieldset>`;
+                        elem += `<div class="radio">`;
+                        elem += `<input type="radio"
+                                               name="matching_person"
+                                               id="radio1">
+                                            <label for="radio1"></label>`;
+                        elem += `</div>`;
+                        elem += `</fieldset>`;
+                        elem += `</td>`;
+                        elem += `</tr>`;
+                    });
+                } else {
+                    elem += `<tr><td colspan="2" class="text-center">No data found!</td></tr>`;
+                }
+
+                $('#qa_list').empty().append(elem);
+            } else {
+                Swal.fire({
+                    title: 'Matching',
+                    text: "Something went wrong!",
+                    icon: 'warning',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok'
+                })
+            }
+        }
+
+
+        async function getTaskBySelectedProject(obj) {
+            let project_id = obj.value;
+            let elem = '';
+            let response = await getData('{{ url('api/v1/tasks/project') }}' + '/' + project_id, [], 'GET');
+            if (response.success) {
+                if (response.data.length > 0) {
+                    [...response.data].map((row, index) => {
+                        elem += `<option value='${row.id}'>${row.task_name}</option>`;
+                    });
+                } else {
+                    elem += `<option value='' disabled>No task found!</option>`;
+                }
+                $('#tasks').empty().append(elem);
             } else {
                 Swal.fire({
                     title: 'Matching',
