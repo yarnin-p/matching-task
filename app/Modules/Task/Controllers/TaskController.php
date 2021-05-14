@@ -64,7 +64,7 @@ class TaskController extends Controller
     {
         $project = $this->projectRepo->getProject($id);
         if ($project) {
-            $tasks = $this->taskRepo->getAllTasksByProject($project->id);
+            $tasks = $this->taskRepo->getAllTasksByProject($request, $project->id);
             if ($tasks) {
                 return view('project.detail', compact('tasks'));
             } else {

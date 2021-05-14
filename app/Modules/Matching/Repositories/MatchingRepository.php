@@ -3,6 +3,7 @@
 namespace App\Modules\Matching\Repositories;
 
 use App\Models\QATasksModel;
+use App\Models\TaskModel;
 use App\Modules\Matching\Interfaces\MatchingRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
@@ -19,17 +20,18 @@ class MatchingRepository implements MatchingRepositoryInterface
     /**
      * @var UserModel
      */
-    private $projectModel, $qaTaskModel;
+    private $projectModel, $qaTaskModel, $taskModel;
 
     /**
      * ProjectRepository constructor.
      * @param ProjectModel $projectModel
      */
-    public function __construct(ProjectModel $projectModel, QATasksModel $qaTaskModel)
+    public function __construct(ProjectModel $projectModel, QATasksModel $qaTaskModel, TaskModel $taskModel)
     {
         DB::enableQueryLog();
 //        var_dump(DB::getQueryLog());exit();
         $this->projectModel = $projectModel;
+        $this->taskModel = $taskModel;
         $this->qaTaskModel = $qaTaskModel;
     }
 
@@ -40,9 +42,11 @@ class MatchingRepository implements MatchingRepositoryInterface
     public function searchQA(Request $request)
     {
         try {
+            $taskId = $request->input('task_id');
+            $taskSize = $this->taskModel::where('id', $taskId)->select('task_size')->first();
             $skills = $request->input('skills');
-            $taskSize = $request->input('task_size');
             $experience = (string)$request->input('experience');
+
             if (substr($experience, 0, 1) == 0) {
                 $experience = substr($experience, 1);
             }

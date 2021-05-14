@@ -65,7 +65,8 @@ class TaskRepository implements TaskRepositoryInterface
         try {
             return $this->taskModel::join('projects', 'tasks.project_id', '=', 'projects.id')
                 ->select('tasks.*', 'projects.project_name')
-                ->where('project_id', $projectId)
+                ->where('tasks.project_id', $projectId)
+                ->whereDate('tasks.end_date', '>', date('Y-m-d'))
                 ->where('tasks.status', 'process')
                 ->get()
                 ->toArray();

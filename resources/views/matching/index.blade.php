@@ -88,19 +88,6 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <div class="controls">
-                                                        <label for="task_size">Task size</label>
-                                                        <select name="task_size" id="task_size" class="form-control">
-                                                            <option value="S">S</option>
-                                                            <option value="M">M</option>
-                                                            <option value="L">L</option>
-                                                            <option value="XL">XL</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <div class="controls">
                                                         <label for="task_size">Work experiences</label>
                                                         <input type="number" class="form-control"
                                                                placeholder="Work experiences"
@@ -109,17 +96,6 @@
                                                                name="work_experiences" id="work_experiences">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <label for="period_date">Start and end date of task</label>
-                                                <fieldset class="form-group position-relative has-icon-left">
-                                                    <input type="text" class="form-control daterange"
-                                                           id="period_date" name="period_date"
-                                                           placeholder="Select Date">
-                                                    <div class="form-control-position">
-                                                        <i class='bx bx-calendar-check'></i>
-                                                    </div>
-                                                </fieldset>
                                             </div>
                                         </div>
                                         <button type="button" onclick="search();"
@@ -185,10 +161,8 @@
             let data = {
                 skills: $('#skills').val(),
                 experience: $('#work_experiences').val(),
-                period_date: $('#period_date').val(),
-                task_size: $('#task_size').val(),
                 project_id: $('#projects').val(),
-                task: $('#tasks').val()
+                task_id: $('#tasks').val()
             }
             let response = await postData('{{ url('api/v1/matching/search') }}', data, 'POST');
             if (response.success) {
