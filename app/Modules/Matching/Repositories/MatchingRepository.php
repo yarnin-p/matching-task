@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 use App\Models\ProjectModel;
 
@@ -40,10 +41,11 @@ class MatchingRepository implements MatchingRepositoryInterface
     {
         try {
             $skills = $request->input('skills');
+            $taskSize = $request->input('task_size');
             $experience = $request->input('experience');
             $qaRole = DB::table('roles')->where('role_name', '=', 'qa')->first();
             $qaRole = $qaRole ? $qaRole->id : 1;
-            $results = DB::table('users')
+            $qaList = DB::table('users')
                 ->join('qa_skills', 'users.id', '=', 'qa_skills.user_id')
                 ->join('qa_experiences', 'users.id', '=', 'qa_experiences.user_id')
                 ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
@@ -54,9 +56,47 @@ class MatchingRepository implements MatchingRepositoryInterface
                 ->get()
                 ->toArray();
 
-            return $this->checkQaAvailable($results);
-        } catch (\Exception $e) {
+            $isPassed = $this->checkQaQualifiedTasks($qaList, $taskSize);
+            return $this->checkQaAvailable($isPassed);
+        } catch (Exception $e) {
             Log::error('MatchingRepository@getAllProjects: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
+    }
+
+    /**
+     * @param $qaList
+     * @param $taskSize
+     * @return false|mixed
+     */
+    public function checkQaQualifiedTasks($qaList, $taskSize)
+    {
+        try {
+            $qualifiedTaskNum = 3;
+            $taskSize = 'S';
+            if ($taskSize == 'L') {
+                $taskSize = 'M';
+            } else if ($taskSize == 'XL') {
+                $taskSize = 'L';
+            }
+
+            if (count($qaList) > 0) {
+                foreach ($qaList as $key => $qaRow) {
+                    $isPassed = $this->qaTaskModel::join('tasks', 'qa_tasks.task_id', '=', 'tasks.id')
+                        ->where('qa_tasks.status', '=', 'complete')
+                        ->where('qa_tasks.qa_id', '=', $qaRow->id)
+                        ->where('tasks.task_size', '=', $taskSize)
+                        ->get()
+                        ->toArray();
+                    if (count($isPassed) < $qualifiedTaskNum) {
+                        unset($qaList[$key]);
+                    }
+                }
+            }
+
+            return $qaList;
+        } catch (\Exception $e) {
+            Log::error('MatchingRepository@checkQaQualifiedTasks: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
         }
     }

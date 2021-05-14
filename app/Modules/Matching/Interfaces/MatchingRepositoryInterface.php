@@ -16,4 +16,11 @@ interface MatchingRepositoryInterface
      * @return mixed
      */
     public function saveMatching(Request $request);
+
+    /**
+     * @param $qaList
+     * @param $taskSize
+     * @return mixed
+     */
+    public function checkQaQualifiedTasks($qaList, $taskSize);
 }

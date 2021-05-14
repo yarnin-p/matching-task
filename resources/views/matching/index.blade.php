@@ -257,7 +257,8 @@
             let qa_data = $('input[name="matching_person"]')[0].value
             let data = {
                 task_id: $('#tasks').val(),
-                qa_id: qa_data
+                qa_id: qa_data,
+                task_size: $('#task_size').val()
             }
 
             let response = await postData('{{ url('api/v1/matching/save') }}', data, 'POST');
