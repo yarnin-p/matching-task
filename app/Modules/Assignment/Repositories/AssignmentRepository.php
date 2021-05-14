@@ -47,4 +47,22 @@ class AssignmentRepository implements AssignmentRepositoryInterface
             return FALSE;
         }
     }
+
+    /**
+     * @param Request $request
+     * @return array|false|mixed
+     */
+    public function getAllAssignmentTasksHistory(Request $request) {
+        try {
+            return DB::table('qa_tasks')
+                ->join('tasks', 'qa_tasks.task_id', '=', 'tasks.id')
+                ->join('users', 'qa_tasks.qa_id', '=', 'users.id')
+                ->select('tasks.*', 'users.firstname', 'users.lastname')
+                ->get()
+                ->toArray();
+        } catch (\Exception $e) {
+            Log::error('AssignmentRepository@getAllAssignmentTasksHistory: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
+    }
 }

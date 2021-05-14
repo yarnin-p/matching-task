@@ -9,4 +9,10 @@ interface AssignmentRepositoryInterface
      * @return mixed
      */
     public function getAllAssignmentTasks(Request $request);
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function getAllAssignmentTasksHistory(Request $request);
 }

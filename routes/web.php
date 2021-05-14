@@ -50,9 +50,8 @@ Route::group([
     'middlewares' => ['web'],
     'prefix' => 'matching'
 ], function () {
-
     Route::get('/', '\App\Modules\Matching\Controllers\MatchingController@index');
-
+    Route::get('/history', '\App\Modules\Matching\Controllers\MatchingController@history');
 });
 
 Route::group([

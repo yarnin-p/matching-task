@@ -35,6 +35,8 @@
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between">
                                     <h4 class="card-title">Matching</h4>
+                                    <a href="{{ url('matching/history') }}"
+                                       class="btn btn-sm btn-primary">Matching History</a>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
@@ -190,7 +192,7 @@
             }
             let response = await postData('{{ url('api/v1/matching/search') }}', data, 'POST');
             if (response.success) {
-                if (response.data.length > 0) {
+                if (response.data && response.data.length > 0) {
                     [...response.data].map((row, index) => {
                         elem += `<tr>`;
                         elem += `<td>${row.firstname} ${row.lastname}</td>`;
@@ -208,6 +210,15 @@
                         elem += `</tr>`;
                     });
                 } else {
+                    Swal.fire({
+                        title: 'Matching',
+                        text: "No qa matching found!",
+                        icon: 'warning',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok'
+                    });
                     elem += `<tr><td colspan="2" class="text-center">No data found!</td></tr>`;
                 }
 
@@ -221,7 +232,7 @@
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Ok'
-                })
+                });
             }
         }
 
@@ -272,7 +283,7 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false
-                }).then(function(result) {
+                }).then(function (result) {
                     if (result.value) {
                         location.reload();
                     } else {

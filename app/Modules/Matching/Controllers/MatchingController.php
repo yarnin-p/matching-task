@@ -2,6 +2,7 @@
 
 namespace App\Modules\Matching\Controllers;
 
+use App\Modules\Assignment\Repositories\AssignmentRepository;
 use App\Modules\Matching\Repositories\MatchingRepository;
 use App\Modules\Project\Repositories\ProjectRepository;
 use App\Modules\Skill\Repositories\SkillRepository;
@@ -20,24 +21,29 @@ class MatchingController extends Controller
     /**
      * @var ProjectRepository
      */
-    private $projectRepo, $taskRepo, $skillRepo, $matchingRepo;
+    private $projectRepo, $taskRepo, $skillRepo, $matchingRepo, $assignmentRepo;
 
     /**
-     * ProjectController constructor.
+     * MatchingController constructor.
      * @param ProjectRepository $projectRepository
      * @param TaskRepository $taskRepository
+     * @param SkillRepository $skillRepo
+     * @param MatchingRepository $matchingRepo
+     * @param AssignmentRepository $assignmentRepo
      */
     public function __construct(
         ProjectRepository $projectRepository,
         TaskRepository $taskRepository,
         SkillRepository $skillRepo,
-        MatchingRepository $matchingRepo
+        MatchingRepository $matchingRepo,
+        AssignmentRepository $assignmentRepo
     )
     {
         $this->projectRepo = $projectRepository;
         $this->taskRepo = $taskRepository;
         $this->skillRepo = $skillRepo;
         $this->matchingRepo = $matchingRepo;
+        $this->assignmentRepo = $assignmentRepo;
     }
 
 
@@ -46,6 +52,12 @@ class MatchingController extends Controller
         $skills = $this->skillRepo->getAllSkills($request);
         $projects = $this->projectRepo->getAllProjects($request);
         return view('matching.index', compact(['projects', 'skills']));
+    }
+
+    public function history(Request $request)
+    {
+        $histories = $this->assignmentRepo->getAllAssignmentTasksHistory($request);
+        return view('matching.history', compact('histories'));
     }
 
 
