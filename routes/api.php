@@ -26,6 +26,14 @@ Route::group([
     Route::post('/login/check-login', '\App\Modules\Auth\Controllers\AuthController@checkLogin');
 });
 
+Route::group([
+    'middlewares' => ['web'],
+    'prefix' => 'v1/users'
+], function () {
+    Route::post('/add', '\App\Modules\User\Controllers\SkillController@create');
+    Route::post('/{id}/edit', '\App\Modules\User\Controllers\SkillController@update');
+    Route::post('/{id}/delete', '\App\Modules\User\Controllers\SkillController@delete');
+});
 
 Route::group([
     'middlewares' => ['web'],
@@ -48,7 +56,6 @@ Route::group([
 ], function () {
     Route::get('/project/{projectId}', '\App\Modules\Task\Controllers\TaskController@getTaskBySelectedProject');
     Route::post('/send-task/{taskId}', '\App\Modules\Task\Controllers\TaskController@sendTask');
-
 });
 
 

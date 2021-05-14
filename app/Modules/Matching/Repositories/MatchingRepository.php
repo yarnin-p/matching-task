@@ -44,7 +44,7 @@ class MatchingRepository implements MatchingRepositoryInterface
             $taskSize = $request->input('task_size');
             $experience = $request->input('experience');
             $qaRole = DB::table('roles')->where('role_name', '=', 'qa')->first();
-            $qaRole = $qaRole ? $qaRole->id : 1;
+            $qaRole = $qaRole ? $qaRole->id : 2;
             $qaList = DB::table('users')
                 ->join('qa_skills', 'users.id', '=', 'qa_skills.user_id')
                 ->join('qa_experiences', 'users.id', '=', 'qa_experiences.user_id')
@@ -69,14 +69,14 @@ class MatchingRepository implements MatchingRepositoryInterface
      * @param $taskSize
      * @return false|mixed
      */
-    public function checkQaQualifiedTasks($qaList, $taskSize)
+    public function checkQaQualifiedTasks($qaList, $selectedTaskSize)
     {
         try {
             $qualifiedTaskNum = 3;
             $taskSize = 'S';
-            if ($taskSize == 'L') {
+            if ($selectedTaskSize == 'L') {
                 $taskSize = 'M';
-            } else if ($taskSize == 'XL') {
+            } else if ($selectedTaskSize == 'XL') {
                 $taskSize = 'L';
             }
 
@@ -88,8 +88,10 @@ class MatchingRepository implements MatchingRepositoryInterface
                         ->where('tasks.task_size', '=', $taskSize)
                         ->get()
                         ->toArray();
-                    if (count($isPassed) < $qualifiedTaskNum) {
-                        unset($qaList[$key]);
+                    if ($selectedTaskSize !== 'S') {
+                        if (count($isPassed) < $qualifiedTaskNum) {
+                            unset($qaList[$key]);
+                        }
                     }
                 }
             }

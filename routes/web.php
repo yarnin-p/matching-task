@@ -111,3 +111,14 @@ Route::group([
     Route::post('/work-experience/edit/{id?}', '\App\Modules\QA\Controllers\WorkExperienceController@postEdit');
     Route::get('/work-experience/delete', '\App\Modules\QA\Controllers\WorkExperienceController@delete');
 });
+
+
+Route::group([
+    'middlewares' => ['web'],
+    'prefix' => 'users'
+], function () {
+    Route::get('/', '\App\Modules\User\Controllers\UserController@index');
+    Route::get('/edit/{userId}', '\App\Modules\User\Controllers\UserController@getEdit');
+    Route::get('/delete/{userId}', '\App\Modules\User\Controllers\UserController@postEdit');
+    Route::get('/add', '\App\Modules\User\Controllers\UserController@delete');
+});
