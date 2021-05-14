@@ -42,22 +42,61 @@ class MatchingRepository implements MatchingRepositoryInterface
         try {
             $skills = $request->input('skills');
             $taskSize = $request->input('task_size');
-            $experience = $request->input('experience');
+            $experience = (string)$request->input('experience');
+            if (substr($experience, 0, 1) == 0) {
+                $experience = substr($experience, 1);
+            }
+
             $qaRole = DB::table('roles')->where('role_name', '=', 'qa')->first();
+
             $qaRole = $qaRole ? $qaRole->id : 2;
             $qaList = DB::table('users')
                 ->join('qa_skills', 'users.id', '=', 'qa_skills.user_id')
                 ->join('qa_experiences', 'users.id', '=', 'qa_experiences.user_id')
                 ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
                 ->whereIn('qa_skills.skill_id', $skills)
-                ->where('qa_experiences.year', '=', $experience)
                 ->where('user_roles.role_id', '=', $qaRole)
                 ->select('users.*')
                 ->get()
                 ->toArray();
 
-            $isPassed = $this->checkQaQualifiedTasks($qaList, $taskSize);
+            $isExpMatched = $this->getExpQa($qaList, $experience);
+            $isPassed = $this->checkQaQualifiedTasks($isExpMatched, $taskSize);
             return $this->checkQaAvailable($isPassed);
+        } catch (Exception $e) {
+            Log::error('MatchingRepository@getAllProjects: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
+    }
+
+    /**
+     * @param $qaList
+     * @param $experience
+     * @return false
+     */
+    public function getExpQa($qaList, $experience)
+    {
+        try {
+            if (count($qaList) > 0) {
+                foreach ($qaList as $key => $qaRow) {
+                    $totalExp = 0;
+                    $workExps = DB::table('qa_experiences')
+                        ->where('user_id', '=', $qaRow->id)
+                        ->get()
+                        ->toArray();
+                    foreach ($workExps as $workExp) {
+                        $totalExp += $workExp->year;
+                    }
+
+                    if ($totalExp == (int)$experience) {
+                        continue;
+                    } else {
+                        unset($qaList[$key]);
+                    }
+                }
+            }
+
+            return $qaList;
         } catch (Exception $e) {
             Log::error('MatchingRepository@getAllProjects: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;

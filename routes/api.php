@@ -30,9 +30,9 @@ Route::group([
     'middlewares' => ['web'],
     'prefix' => 'v1/users'
 ], function () {
-    Route::post('/add', '\App\Modules\User\Controllers\SkillController@create');
-    Route::post('/{id}/edit', '\App\Modules\User\Controllers\SkillController@update');
-    Route::post('/{id}/delete', '\App\Modules\User\Controllers\SkillController@delete');
+    Route::post('/add', '\App\Modules\User\Controllers\UserController@create');
+    Route::post('/edit/{userId}', '\App\Modules\User\Controllers\UserController@update');
+    Route::post('/delete/{userId}', '\App\Modules\User\Controllers\UserController@delete');
 });
 
 Route::group([

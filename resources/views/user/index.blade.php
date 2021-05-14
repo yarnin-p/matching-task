@@ -58,12 +58,12 @@
                                                         <td>{{ $result->lastname }}</td>
                                                         <td>{{ $result->email }}</td>
                                                         <td>
-                                                            <a href="{{ url('skills/'.$result['id']).'/edit' }}"
+                                                            <a href="{{ url('users/edit'.$result->id) }}"
                                                                type="button" class="btn btn-warning btn-sm">
                                                                 <i class="fas fa-pencil-alt top-0"></i>
                                                             </a>
                                                             <button
-                                                                onclick="deleteSkill({{ $result['id'] }});"
+                                                                onclick="deleteSkill({{ $result->id }});"
                                                                 type="button" class="btn btn-danger btn-sm">
                                                                 <i class="fas fa-trash top-0"></i>
                                                             </button>
@@ -105,11 +105,11 @@
         });
 
 
-        async function deleteSkill(skillId) {
+        async function deleteSkill(userId) {
             let data = {}
             Swal.fire({
-                title: 'Skills',
-                text: "Are you want to delete skill record?",
+                title: 'Users',
+                text: "Are you want to delete user record?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -117,12 +117,12 @@
                 confirmButtonText: 'Delete'
             }).then(async function (result) {
                 if (result.value) {
-                    let response = await postData('{{ url('api/v1/skills') }}' + '/' + skillId + '/delete', data, 'POST');
+                    let response = await postData('{{ url('api/v1/users/delete') }}/' + userId, data, 'POST');
                     if (response.success) {
-                        location.href = '{{ url('skills') }}';
+                        location.href = '{{ url('users') }}';
                     } else {
                         Swal.fire({
-                            title: 'Skills',
+                            title: 'Users',
                             text: "Something went wrong!",
                             icon: 'warning',
                             showCancelButton: false,
