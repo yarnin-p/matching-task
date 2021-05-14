@@ -145,6 +145,7 @@
         async function updateTask() {
             let data = {
                 task_name: $('#task_name').val(),
+                task_size: $('#task_size').val(),
                 description: $('#description').val(),
                 period_date: $('#period_date').val()
             }

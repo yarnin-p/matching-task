@@ -100,6 +100,7 @@ class TaskRepository implements TaskRepositoryInterface
             $period_date = explode('-', $request->input('period_date'));
 
             $input['project_id'] = $projectId;
+            $input['task_size'] = $request->input('task_size');
             $input['task_name'] = trim($request->input('task_name'));
             $input['description'] = $request->input('description') ? $request->input('description') : "";
             $input['start_date'] = defaultDateFormat($period_date[0]);
@@ -122,6 +123,7 @@ class TaskRepository implements TaskRepositoryInterface
         try {
             $period_date = explode('-', $request->input('period_date'));
             $task = $this->taskModel::find($id);
+            $task->task_size = $request->input('task_size');
             $task->task_name = trim($request->input('task_name'));
             $task->description = $request->input('description') ? $request->input('description') : "";
             $task->start_date = defaultDateFormat($period_date[0]);
