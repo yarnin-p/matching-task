@@ -91,7 +91,7 @@ class MatchingRepository implements MatchingRepositoryInterface
                         $totalExp += $workExp->year;
                     }
 
-                    if ($totalExp == (int)$experience) {
+                    if ($totalExp >= (int)$experience) {
                         continue;
                     } else {
                         unset($qaList[$key]);
