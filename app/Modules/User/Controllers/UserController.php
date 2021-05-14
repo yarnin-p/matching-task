@@ -97,4 +97,21 @@ class UserController extends Controller
             return FALSE;
         }
     }
+
+    public function delete(Request $request, $userId)
+    {
+        try {
+
+
+            if (!$userId) {
+                return responseError(422, 422, 'Required user id', []);
+            }
+
+            $this->userRepo->deleteUser($userId);
+            return responseSuccess(200, 200, 'Deleted', []);
+        } catch (\Exception $e) {
+            Log::error('UserController@create: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
+    }
 }

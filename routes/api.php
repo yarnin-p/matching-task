@@ -32,7 +32,7 @@ Route::group([
 ], function () {
     Route::post('/add', '\App\Modules\User\Controllers\UserController@create');
     Route::post('/edit/{userId}', '\App\Modules\User\Controllers\UserController@update');
-    Route::post('/delete/{userId}', '\App\Modules\User\Controllers\UserController@delete');
+    Route::delete('/delete/{userId}', '\App\Modules\User\Controllers\UserController@delete');
 });
 
 Route::group([

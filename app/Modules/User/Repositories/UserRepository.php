@@ -72,10 +72,10 @@ class UserRepository implements UserRepositoryInterface
             $input['password'] = trim($request->input('password'));
             $input['emp_no'] = trim($request->input('emp_no'));
 
-            $user = $this->userModel::insert($input);
+            $user = $this->userModel::insertGetId($input);
             if ($user) {
                 $role = DB::table('roles')->where('role_name', $request->input('emp_no'))->first();
-                DB::table('user_roles')->insert(['user_id' => $user->id, 'role_id' => $role->id]);
+                DB::table('user_roles')->insert(['user_id' => $user, 'role_id' => $role->id]);
                 return TRUE;
             }
             return FALSE;
@@ -106,8 +106,7 @@ class UserRepository implements UserRepositoryInterface
                     ->where('role_name', $request->input('emp_no'))
                     ->first();
 
-                $user->emp_no == $request->input('emp_no');
-
+                $user->emp_no = $request->input('emp_no');
                 DB::table('user_roles')
                     ->where('user_id', $id)
                     ->where('role_id', $role->id)
@@ -123,10 +122,16 @@ class UserRepository implements UserRepositoryInterface
         }
     }
 
-    public function deleteUser($id, Request $request)
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function deleteUser($id)
     {
         try {
             $this->userModel::where('id', $id)->delete();
+            DB::table('user_roles')->where('user_id', $id)->delete();
+
             return TRUE;
         } catch (\Exception $e) {
             Log::error('UserRepository@deleteUser: [' . $e->getCode() . '] ' . $e->getMessage());

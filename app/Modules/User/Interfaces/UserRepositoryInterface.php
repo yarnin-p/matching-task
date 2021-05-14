@@ -30,8 +30,8 @@ interface UserRepositoryInterface
     public function updateUser($id, Request $request);
 
     /**
-     * @param Request $request
+     * @param $id
      * @return mixed
      */
-    public function deleteUser($id, Request $request);
+    public function deleteUser($id);
 }

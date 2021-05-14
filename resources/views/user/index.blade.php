@@ -118,7 +118,7 @@
                 confirmButtonText: 'Delete'
             }).then(async function (result) {
                 if (result.value) {
-                    let response = await postData('{{ url('api/v1/users/delete') }}/' + userId, data, 'POST');
+                    let response = await postData('{{ url('api/v1/users/delete') }}/' + userId, data, 'DELETE');
                     if (response.success) {
                         location.href = '{{ url('users') }}';
                     } else {
