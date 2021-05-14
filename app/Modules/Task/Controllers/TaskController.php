@@ -29,8 +29,8 @@ class TaskController extends Controller
     {
         $this->projectRepo = $projectRepository;
         $this->taskRepo = $taskRepository;
-    }
 
+    }
 
     public function taskCreateView(Request $request, $projectId)
     {
@@ -148,7 +148,23 @@ class TaskController extends Controller
                 return responseError(422, 422, 'Project id not found!', []);
             }
 
-            $tasks = $this->taskRepo->getAllTasksByProject($request, $projectId);
+            $tasks = $this->taskRepo->getAllTasksProcessByProject($request, $projectId);
+            return responseSuccess(200, 200, 'Successfully', $tasks);
+        } catch (\Exception $e) {
+            Log::error('TaskController@getTaskBySelectedProject: [' . $e->getCode() . '] ' . $e->getMessage());
+            return responseError(500, 500, 'Something went wrong!', []);
+        }
+    }
+
+
+    public function sendTask($taskId)
+    {
+        try {
+            if (!$taskId) {
+                return responseError(422, 422, 'Task id not found!', []);
+            }
+
+            $tasks = $this->taskRepo->commitTask($taskId);
             return responseSuccess(200, 200, 'Successfully', $tasks);
         } catch (\Exception $e) {
             Log::error('TaskController@getTaskBySelectedProject: [' . $e->getCode() . '] ' . $e->getMessage());

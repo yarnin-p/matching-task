@@ -47,6 +47,8 @@ Route::group([
     'prefix' => 'v1/tasks'
 ], function () {
     Route::get('/project/{projectId}', '\App\Modules\Task\Controllers\TaskController@getTaskBySelectedProject');
+    Route::post('/send-task/{taskId}', '\App\Modules\Task\Controllers\TaskController@sendTask');
+
 });
 
 

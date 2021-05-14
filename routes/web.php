@@ -60,6 +60,7 @@ Route::group([
     'prefix' => 'assignment'
 ], function () {
     Route::get('/', '\App\Modules\Assignment\Controllers\AssignmentController@index');
+    Route::get('/history/complete', '\App\Modules\Assignment\Controllers\AssignmentController@taskHistorySuccessView');
 });
 
 Route::group([

@@ -35,7 +35,13 @@ class AssignmentRepository implements AssignmentRepositoryInterface
     {
         try {
             $userData = Session::get('user_data');
-            return $this->qaTaskModel::where('qa_id', '=', $userData->id);
+            return DB::table('qa_tasks')
+                ->join('tasks', 'qa_tasks.task_id', '=', 'tasks.id')
+                ->where('qa_tasks.qa_id', '=', $userData->id)
+                ->where('tasks.status', '=', 'process')
+                ->select('tasks.*')
+                ->get()
+                ->toArray();
         } catch (\Exception $e) {
             Log::error('AssignmentRepository@getAllAssignmentTasks: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;

@@ -18,8 +18,10 @@
                             <h5 class="content-header-title float-left pr-1 mb-0">Task assigned</h5>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item">
-                                        <a><i class="bx bx-home-alt"></i></a>
+                                    <li class="breadcrumb-item"><a href="{{ url('assignment') }}"><i
+                                                class="bx bx-home-alt"></i></a>
+                                    </li>
+                                    <li class="breadcrumb-item"><a>History success tasks</a>
                                     </li>
                                 </ol>
                             </div>
@@ -34,9 +36,7 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between">
-                                    <h4 class="card-title">Task assigned</h4>
-                                    <a href="{{ url('assignment/history/complete') }}"
-                                       class="btn btn-sm btn-primary">History success tasks</a>
+                                    <h4 class="card-title">Task assign complete</h4>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
@@ -46,33 +46,26 @@
                                                 <tr>
                                                     <th>Tasks</th>
                                                     <th>Start date - End date</th>
+                                                    <th>Completed date</th>
                                                     <th>Operations</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @forelse($resultTasks as $resultTask)
-                                                    <tr class="{{ $resultTask->end_date < date('Y-m-d H:i:s') ? 'bg-danger' : '' }}">
-                                                        <td class="{{ $resultTask->end_date < date('Y-m-d H:i:s') ? 'text-white' : '' }}">
-                                                            {{ $resultTask->task_name }}</td>
-                                                        <td class="{{ $resultTask->end_date < date('Y-m-d H:i:s') ? 'text-white' : '' }}">
-                                                            {{ $resultTask->start_date.' - '. $resultTask->end_date }}
-                                                        </td>
-                                                        <td>
-                                                            <button type="button"
-                                                                    onclick="sendTask('{{ $resultTask->id }}');"
-                                                                    class="btn btn-success btn-sm">
-                                                                Check
-                                                            </button>
-                                                        </td>
+                                                @forelse($results as $result)
+                                                    <tr>
+                                                        <td>{{ $result->task_name }}</td>
+                                                        <td>{{ $result->start_date.' - '. $result->end_date }}</td>
+                                                        <td>{{ $result->updated_at }}</td>
+                                                        <td></td>
                                                     </tr>
                                                 @empty
-
                                                 @endforelse
                                                 </tbody>
                                                 <tfoot>
                                                 <tr>
                                                     <th>Tasks</th>
                                                     <th>Start date - End date</th>
+                                                    <th>Completed date</th>
                                                     <th>Operations</th>
                                                 </tr>
                                                 </tfoot>

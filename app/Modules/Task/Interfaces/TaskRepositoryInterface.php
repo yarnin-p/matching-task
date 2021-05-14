@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Modules\Task\Interfaces;
+
 use Illuminate\Http\Request;
 
 interface TaskRepositoryInterface
@@ -36,4 +38,22 @@ interface TaskRepositoryInterface
      * @return mixed
      */
     public function deleteTask($id, Request $request);
+
+    /**
+     * @param $taskId
+     * @return mixed
+     */
+    public function commitTask($taskId);
+
+    /**
+     * @param Request $request
+     * @param $projectId
+     * @return mixed
+     */
+    public function getAllTasksProcessByProject(Request $request, $projectId);
+
+    /**
+     * @return mixed
+     */
+    public function getAllHistorySuccessTasks();
 }

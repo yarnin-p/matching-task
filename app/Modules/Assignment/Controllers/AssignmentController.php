@@ -20,21 +20,28 @@ class AssignmentController extends Controller
     /**
      * @var ProjectRepository
      */
-    private $assignmentRepo;
+    private $assignmentRepo, $taskRepo;
 
     /**
-     * TaskController constructor.
-     * @param ProjectRepository $projectRepository
+     * AssignmentController constructor.
+     * @param AssignmentRepository $assignmentRepo
      * @param TaskRepository $taskRepository
      */
-    public function __construct(AssignmentRepository $assignmentRepo)
+    public function __construct(AssignmentRepository $assignmentRepo, TaskRepository $taskRepository)
     {
         $this->assignmentRepo = $assignmentRepo;
+        $this->taskRepo = $taskRepository;
     }
 
     public function index(Request $request)
     {
         $resultTasks = $this->assignmentRepo->getAllAssignmentTasks($request);
         return view('assignment.index', compact('resultTasks'));
+    }
+
+    public function taskHistorySuccessView(Request $request)
+    {
+        $results = $this->taskRepo->getAllHistorySuccessTasks();
+        return view('assignment.history', compact('results'));
     }
 }
