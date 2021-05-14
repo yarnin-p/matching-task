@@ -52,13 +52,17 @@ class UserRepository implements UserRepositoryInterface
     public function getUser($userId)
     {
         try {
-            return $this->userModel::find($userId)->first();
+            return $this->userModel::where('id', $userId)->first();
         } catch (\Exception $e) {
             Log::error('UserRepository@getUser: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
         }
     }
 
+    /**
+     * @param Request $request
+     * @return false|mixed
+     */
     public function createUser(Request $request)
     {
         try {
@@ -68,20 +72,65 @@ class UserRepository implements UserRepositoryInterface
             $input['password'] = trim($request->input('password'));
             $input['emp_no'] = trim($request->input('emp_no'));
 
-            return $this->userModel::insert($input);
+            $user = $this->userModel::insert($input);
+            if ($user) {
+                $role = DB::table('roles')->where('role_name', $request->input('emp_no'))->first();
+                DB::table('user_roles')->insert(['user_id' => $user->id, 'role_id' => $role->id]);
+                return TRUE;
+            }
+            return FALSE;
+
         } catch (\Exception $e) {
-            Log::error('ProjectRepository@createUser: [' . $e->getCode() . '] ' . $e->getMessage());
+            Log::error('UserRepository@createUser: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
         }
     }
 
+    /**
+     * @param $id
+     * @param Request $request
+     * @return bool
+     */
     public function updateUser($id, Request $request)
     {
-        // TODO: Implement updateUser() method.
+        try {
+            $user = $this->userModel::where('id', $id)->first();
+            $user->firstname = trim($request->input('firstname'));
+            $user->lastname = $request->input('lastname');
+            $user->email = $request->input('email');
+            $user->password = $request->input('password');
+
+            if ($user->emp_no != $request->input('emp_no')) {
+                $role = DB::table('roles')->where('role_name', $user->emp_no)->first();
+                $newRole = DB::table('roles')
+                    ->where('role_name', $request->input('emp_no'))
+                    ->first();
+
+                $user->emp_no == $request->input('emp_no');
+
+                DB::table('user_roles')
+                    ->where('user_id', $id)
+                    ->where('role_id', $role->id)
+                    ->delete();
+                DB::table('user_roles')->insert(['user_id' => $user->id, 'role_id' => $newRole->id]);
+            }
+
+            $user->save();
+            return TRUE;
+        } catch (\Exception $e) {
+            Log::error('UserRepository@updateUser: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
     }
 
     public function deleteUser($id, Request $request)
     {
-        // TODO: Implement deleteUser() method.
+        try {
+            $this->userModel::where('id', $id)->delete();
+            return TRUE;
+        } catch (\Exception $e) {
+            Log::error('UserRepository@deleteUser: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
     }
 }

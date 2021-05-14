@@ -54,16 +54,17 @@
                                                 <tbody>
                                                 @forelse($results as $result)
                                                     <tr>
-                                                        <td>{{ $result->firstname }}</td>
-                                                        <td>{{ $result->lastname }}</td>
-                                                        <td>{{ $result->email }}</td>
+                                                        <td>{{ $result['firstname'] }}</td>
+                                                        <td>{{ $result['lastname'] }}</td>
+                                                        <td>{{ $result['email'] }}</td>
+                                                        <td>{{ $result['emp_no'] }}</td>
                                                         <td>
-                                                            <a href="{{ url('users/edit'.$result->id) }}"
+                                                            <a href="{{ url('users/edit/'.$result['id']) }}"
                                                                type="button" class="btn btn-warning btn-sm">
                                                                 <i class="fas fa-pencil-alt top-0"></i>
                                                             </a>
                                                             <button
-                                                                onclick="deleteSkill({{ $result->id }});"
+                                                                onclick="deleteSkill({{ $result['id'] }});"
                                                                 type="button" class="btn btn-danger btn-sm">
                                                                 <i class="fas fa-trash top-0"></i>
                                                             </button>

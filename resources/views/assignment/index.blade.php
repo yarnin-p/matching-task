@@ -61,7 +61,7 @@
                                                             <button type="button"
                                                                     onclick="sendTask('{{ $resultTask->id }}');"
                                                                     class="btn btn-success btn-sm">
-                                                                Check
+                                                                End Task
                                                             </button>
                                                         </td>
                                                     </tr>

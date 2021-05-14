@@ -118,7 +118,7 @@ Route::group([
     'prefix' => 'users'
 ], function () {
     Route::get('/', '\App\Modules\User\Controllers\UserController@index');
-    Route::get('/edit/{userId}', '\App\Modules\User\Controllers\UserController@getEdit');
-    Route::get('/delete/{userId}', '\App\Modules\User\Controllers\UserController@postEdit');
-    Route::get('/add', '\App\Modules\User\Controllers\UserController@delete');
+    Route::get('/edit/{userId}', '\App\Modules\User\Controllers\UserController@editView');
+    Route::get('/delete/{userId}', '\App\Modules\User\Controllers\UserController@delete');
+    Route::get('/add', '\App\Modules\User\Controllers\UserController@createView');
 });

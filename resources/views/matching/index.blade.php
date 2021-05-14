@@ -64,6 +64,7 @@
                                                     <div class="controls">
                                                         <label for="tasks">Tasks</label>
                                                         <select name="tasks" id="tasks" class="form-control">
+                                                            <option value=""></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -102,34 +103,35 @@
                                                 class="btn btn-primary mb-3">Match
                                         </button>
                                         <hr>
-                                        <form>
-                                            <div class="table-responsive">
-                                                <table class="table zero-configuration">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Persons</th>
-                                                        <th>Operations</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody id="qa_list">
-                                                    <tr>
-                                                        <td colspan="2" class="text-center">No data found!</td>
-                                                    </tr>
-                                                    </tbody>
-                                                    <tfoot>
-                                                    <tr>
-                                                        <th>Persons</th>
-                                                        <th>Operations</th>
-                                                    </tr>
-                                                    </tfoot>
-                                                </table>
-                                            </div>
-                                            <button type="reset" class="btn btn-danger">Cancel</button>
-                                            <button type="button"
-                                                    onclick="saveMatching();"
-                                                    class="btn btn-primary">Submit
-                                            </button>
-                                        </form>
+                                        <div class="table-responsive">
+                                            <table class="table zero-configuration">
+                                                <thead>
+                                                <tr>
+                                                    <th>Persons</th>
+                                                    <th>Operations</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="qa_list">
+                                                <tr>
+                                                    <td colspan="2" class="text-center">No data found!</td>
+                                                </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <th>Persons</th>
+                                                    <th>Operations</th>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                        <button type="button" onclick="resetMatching();" class="btn btn-danger">Reset
+                                        </button>
+                                        <button type="button"
+                                                id="submit_matching"
+                                                disabled
+                                                onclick="saveMatching();"
+                                                class="btn btn-primary">Submit
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -152,8 +154,27 @@
             $('#projects').select2({
                 width: '100%',
                 placeholder: '-- Choose Project --'
-            })
+            });
+
+            $('#tasks').select2({
+                width: '100%',
+                placeholder: '-- Please Select Some Project --'
+            });
         });
+
+        function checkSelectedQa() {
+            let selected_flag = false;
+            let selected_person = $('.person_radio');
+            [...selected_person].map((row, index) => {
+                if (row.checked) {
+                    selected_flag = true
+                }
+            });
+
+            if (selected_flag) {
+                $('#submit_matching').prop('disabled', false);
+            }
+        }
 
 
         async function search() {
@@ -173,9 +194,10 @@
                         elem += `<td>`;
                         elem += `<fieldset>`;
                         elem += `<div class="radio">`;
-                        elem += `<input type="radio"
+                        elem += `<input type="radio" class="person_radio"
                                                value="${row.id}"
                                                name="matching_person"
+                                                onchange="checkSelectedQa();"
                                                id="radio1">
                                             <label for="radio1"></label>`;
                         elem += `</div>`;
@@ -275,6 +297,11 @@
                     confirmButtonText: 'Ok'
                 })
             }
+        }
+
+        function resetMatching() {
+            $('#qa_list').empty().append('<tr><td colspan="2" class="text-center">No data found!</td></tr>');
+            $('#submit_matching').prop('disabled', true);
         }
 
     </script>

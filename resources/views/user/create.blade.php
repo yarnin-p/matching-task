@@ -92,7 +92,6 @@
                                                                    required
                                                                    data-validation-required-message="This role field is required">
                                                                 <option value="" disabled selected>-- Choose some role user --</option>
-                                                                <option value="admin">admin</option>
                                                                 <option value="sa">sa</option>
                                                                 <option value="qa">qa</option>
                                                             </select>

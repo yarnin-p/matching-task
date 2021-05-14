@@ -2,7 +2,7 @@
 
 
 @section('title')
-    Skills
+    Users
 @endsection
 
 
@@ -15,13 +15,13 @@
                 <div class="content-header-left col-12 mb-2 mt-1">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h5 class="content-header-title float-left pr-1 mb-0">Skills</h5>
+                            <h5 class="content-header-title float-left pr-1 mb-0">Users</h5>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item"><a href="{{ url('/skills') }}"><i
+                                    <li class="breadcrumb-item"><a href="{{ url('users') }}"><i
                                                 class="bx bx-home-alt"></i></a>
                                     </li>
-                                    <li class="breadcrumb-item"><a href="#">Edit Skill</a>
+                                    <li class="breadcrumb-item"><a href="#">Edit User</a>
                                     </li>
                                 </ol>
                             </div>
@@ -37,38 +37,83 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Edit skill form</h4>
+                                    <h4 class="card-title">Edit user</h4>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <p class="mt-1">Edit skill</p>
+                                        <p class="mt-1">Edit user</p>
                                         <form class="form-horizontal">
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="form-group">
                                                         <div class="controls">
-                                                            <input type="text" name="skill_name" id="skill_name"
+                                                            <input type="text" name="firstname" id="firstname"
                                                                    class="form-control"
-                                                                   placeholder="Skill Name" required
-                                                                   value="{{ $result->skill_name }}"
-                                                                   data-validation-required-message="This Skill Name field is required">
+                                                                   value="{{ $result->firstname }}"
+                                                                   placeholder="Firstname" required
+                                                                   data-validation-required-message="This firstname field is required">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-12">
                                                     <div class="form-group">
                                                         <div class="controls">
-                                                            <textarea class="form-control" name="description"
-                                                                      id="description" placeholder="Description"
-                                                                      rows="5">{{ $result->description }}</textarea>
+                                                            <input type="text" name="lastname" id="lastname"
+                                                                   class="form-control"
+                                                                   value="{{ $result->lastname }}"
+                                                                   placeholder="Lastname" required
+                                                                   data-validation-required-message="This lastname field is required">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <input type="email" name="email" id="email"
+                                                                   class="form-control"
+                                                                   value="{{ $result->email }}"
+                                                                   placeholder="email" required
+                                                                   data-validation-required-message="This email field is required">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <input type="password" name="password" id="password"
+                                                                   class="form-control"
+                                                                   value="{{ $result->password }}"
+                                                                   placeholder="Password" required
+                                                                   data-validation-required-message="This password field is required">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <select type="text" name="emp_no" id="emp_no"
+                                                                    class="form-control"
+                                                                    required
+                                                                    data-validation-required-message="This role field is required">
+                                                                <option value="" disabled selected>-- Choose some role
+                                                                    user --
+                                                                </option>
+                                                                <option
+                                                                    value="sa" {{ $result->emp_no == 'sa' ? 'selected' : '' }}>
+                                                                    sa
+                                                                </option>
+                                                                <option
+                                                                    value="qa" {{ $result->emp_no == 'qa' ? 'selected' : '' }}>
+                                                                    qa
+                                                                </option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <a type="button" class="btn btn-danger"
-                                               href="{{ url('skills') }}">Cancel</a>
-                                            <button type="submit"
-                                                    onclick="updateSkill(); return false;"
+                                               href="{{ url('users') }}">Cancel</a>
+                                            <button type="submit" onclick="updateUser(); return false;"
                                                     class="btn btn-primary">Save
                                             </button>
                                         </form>
@@ -94,18 +139,21 @@
         });
 
 
-        async function updateSkill() {
+        async function updateUser() {
             let data = {
-                skill_name: $('#skill_name').val(),
-                description: $('#description').val()
+                firstname: $('#firstname').val(),
+                lastname: $('#lastname').val(),
+                email: $('#email').val(),
+                emp_no: $('#emp_no').val(),
+                password: $('#password').val(),
             }
-            let response = await postData('{{ url('api/v1/skills/'.$result->id.'/edit/') }}', data, 'POST')
+            let response = await postData('{{ url('api/v1/users/edit'.'/'.$result->id) }}', data, 'POST')
             if (response.success) {
-                location.href = '{{ url('skills/') }}';
+                location.href = '{{ url('users') }}';
             } else {
                 Swal.fire({
-                    title: 'Skill',
-                    text: "Update skill failed!: " + JSON.stringify(response.message),
+                    title: 'User',
+                    text: "Update user failed!: " + JSON.stringify(response.message),
                     icon: 'warning',
                     showCancelButton: false,
                     confirmButtonColor: '#3085d6',

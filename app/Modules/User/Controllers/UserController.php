@@ -41,9 +41,10 @@ class UserController extends Controller
         return view('user.create');
     }
 
-    public function editView(Request $request)
+    public function editView($userId)
     {
-        return view('user.edit');
+        $result = $this->userRepo->getUser($userId);
+        return view('user.edit', compact('result'));
     }
 
 
@@ -67,6 +68,32 @@ class UserController extends Controller
             return responseSuccess(201, 201, 'Created', []);
         } catch (\Exception $e) {
             Log::error('UserController@create: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
+    }
+
+    public function update(Request $request, $userId)
+    {
+        try {
+            $validatorUserData = Validator::make($request->all(), [
+                'firstname' => 'required',
+                'lastname' => 'required',
+                'email' => 'required|email',
+                'password' => 'required',
+                'emp_no' => 'required'
+            ]);
+
+            if ($validatorUserData->fails() || !$userId) {
+                return responseError(422, 422, $validatorUserData->errors(), []);
+            }
+
+            $isProjectUpdated = $this->userRepo->updateUser($userId, $request);
+            if ($isProjectUpdated) {
+                return responseSuccess(201, 201, 'Updated', []);
+            }
+            return responseError(500, 500, 'Something went wrong!', []);
+        } catch (\Exception $e) {
+            Log::error('UserController@update: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
         }
     }

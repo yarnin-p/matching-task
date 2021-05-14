@@ -18,3 +18,32 @@ body.dark-layout .table tbody td a i, body.dark-layout .table tbody th a i {
     color: #fff !important;
 }
 
+.select2-selection__choice__display {
+    color: #fff !important;
+    padding-left: 20px !important;
+}
+
+body.dark-layout p,
+body.dark-layout small,
+body.dark-layout span,
+body.dark-layout label {
+    color: #fff !important;
+}
+
+
+.select2-container--classic .select2-selection--multiple .select2-selection__choice__remove,
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    margin-left: unset;
+    height: 100%;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover,
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
+    background-color: unset !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    border-right: 1px solid #fff !important;
+}
+
+
