@@ -56,7 +56,6 @@ class MatchingRepository implements MatchingRepositoryInterface
             $qaRole = $qaRole ? $qaRole->id : 2;
             $qaList = DB::table('users')
                 ->join('qa_skills', 'users.id', '=', 'qa_skills.user_id')
-                ->join('qa_experiences', 'users.id', '=', 'qa_experiences.user_id')
                 ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
                 ->whereIn('qa_skills.skill_id', $skills)
                 ->where('user_roles.role_id', '=', $qaRole)
@@ -65,7 +64,7 @@ class MatchingRepository implements MatchingRepositoryInterface
                 ->toArray();
 
             $isExpMatched = $this->getExpQa($qaList, $experience);
-            $isPassed = $this->checkQaQualifiedTasks($isExpMatched, $taskSize);
+            $isPassed = $this->checkQaQualifiedTasks($isExpMatched, $taskSize->task_size);
             return $this->checkQaAvailable($isPassed);
         } catch (Exception $e) {
             Log::error('MatchingRepository@getAllProjects: [' . $e->getCode() . '] ' . $e->getMessage());
@@ -99,10 +98,9 @@ class MatchingRepository implements MatchingRepositoryInterface
                     }
                 }
             }
-
             return $qaList;
         } catch (Exception $e) {
-            Log::error('MatchingRepository@getAllProjects: [' . $e->getCode() . '] ' . $e->getMessage());
+            Log::error('MatchingRepository@getExpQa: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
         }
     }
@@ -125,13 +123,13 @@ class MatchingRepository implements MatchingRepositoryInterface
 
             if (count($qaList) > 0) {
                 foreach ($qaList as $key => $qaRow) {
-                    $isPassed = $this->qaTaskModel::join('tasks', 'qa_tasks.task_id', '=', 'tasks.id')
-                        ->where('qa_tasks.status', '=', 'complete')
-                        ->where('qa_tasks.qa_id', '=', $qaRow->id)
-                        ->where('tasks.task_size', '=', $taskSize)
-                        ->get()
-                        ->toArray();
                     if ($selectedTaskSize !== 'S') {
+                        $isPassed = $this->qaTaskModel::join('tasks', 'qa_tasks.task_id', '=', 'tasks.id')
+                            ->where('qa_tasks.status', '=', 'complete')
+                            ->where('qa_tasks.qa_id', '=', $qaRow->id)
+                            ->where('tasks.task_size', '=', $taskSize)
+                            ->get()
+                            ->toArray();
                         if (count($isPassed) < $qualifiedTaskNum) {
                             unset($qaList[$key]);
                         }
@@ -153,7 +151,6 @@ class MatchingRepository implements MatchingRepositoryInterface
     public function checkQaAvailable($qaList)
     {
         try {
-            $results = [];
             if (count($qaList) > 0) {
                 foreach ($qaList as $key => $qaRow) {
                     $isAvailable = $this->qaTaskModel::join('tasks', 'qa_tasks.task_id', '=', 'tasks.id')
