@@ -60,6 +60,23 @@
                                                 <div class="col-sm-12">
                                                     <div class="form-group">
                                                         <div class="controls">
+                                                            <select type="text" name="task_size" id="task_size"
+                                                                    class="form-control" required
+                                                                    data-validation-required-message="This Task Size field is required">
+                                                                <option value="" disabled selected>
+                                                                    -- Choose Some Task Size --
+                                                                </option>
+                                                                <option value="S">S</option>
+                                                                <option value="M">M</option>
+                                                                <option value="L">L</option>
+                                                                <option value="XL">XL</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="controls">
                                                             <textarea class="form-control" name="description"
                                                                       id="description" placeholder="Description"
                                                                       rows="5"
@@ -110,6 +127,7 @@
         async function createProjectTask() {
             let data = {
                 task_name: $('#task_name').val(),
+                task_size: $('#task_size').val(),
                 description: $('#description').val(),
                 period_date: $('#period_date').val(),
                 project_id: {{ $result->id }}

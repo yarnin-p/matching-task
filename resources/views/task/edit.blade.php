@@ -59,6 +59,35 @@
                                                 <div class="col-sm-12">
                                                     <div class="form-group">
                                                         <div class="controls">
+                                                            <select type="text" name="task_size" id="task_size"
+                                                                    class="form-control" required
+                                                                    data-validation-required-message="This Task Size field is required">
+                                                                <option value="" disabled selected>
+                                                                    -- Choose Some Task Size --
+                                                                </option>
+                                                                <option
+                                                                    value="S" {{ $result['task']->task_size == 'S' ? 'selected' : '' }}>
+                                                                    S
+                                                                </option>
+                                                                <option
+                                                                    value="M" {{ $result['task']->task_size == 'M' ? 'selected' : '' }}>
+                                                                    M
+                                                                </option>
+                                                                <option
+                                                                    value="L" {{ $result['task']->task_size == 'L' ? 'selected' : '' }}>
+                                                                    L
+                                                                </option>
+                                                                <option
+                                                                    value="XL" {{ $result['task']->task_size == 'XL' ? 'selected' : '' }}>
+                                                                    XL
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="controls">
                                                             <textarea class="form-control" name="description"
                                                                       id="description" placeholder="Description"
                                                                       rows="5"
@@ -107,8 +136,8 @@
                 // locale: {
                 //     format: 'YYYY-MM-DD'
                 // },
-                startDate: '{{ customDateFormat('d/m/Y', $result['task']->start_date) }}',
-                endDate: '{{ customDateFormat('d/m/Y', $result['task']->end_date) }}'
+                startDate: '{{ customDateFormat('m/d/Y', $result['task']->start_date) }}',
+                endDate: '{{ customDateFormat('m/d/Y', $result['task']->end_date) }}'
             })
         });
 
