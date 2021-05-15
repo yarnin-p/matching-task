@@ -55,7 +55,7 @@ class MatchingRepository implements MatchingRepositoryInterface
 
             $qaRole = $qaRole ? $qaRole->id : 2;
             $qaList = DB::table('users')
-                ->join('qa_skills', 'users.id', '=', 'qa_skills.user_id')
+                ->leftJoin('qa_skills', 'users.id', '=', 'qa_skills.user_id')
                 ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
                 ->where(function ($query) use ($skills) {
                     if ($skills) {
@@ -65,7 +65,6 @@ class MatchingRepository implements MatchingRepositoryInterface
                 ->select('users.*')
                 ->get()
                 ->toArray();
-
             $isExpMatched = $this->getExpQa($qaList, $experience);
             $isPassed = $this->checkQaQualifiedTasks($isExpMatched, $taskSize->task_size);
             $isAvailable = $this->checkQaAvailable($isPassed);
@@ -228,8 +227,10 @@ class MatchingRepository implements MatchingRepositoryInterface
                     ->toArray();
 //                dd(DB::getQueryLog());
                 if (!$result) {
+                    dd($qaList);
                     return $qaList;
                 } else {
+
                     return $result;
                 }
             }
