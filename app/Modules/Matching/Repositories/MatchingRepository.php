@@ -221,11 +221,12 @@ class MatchingRepository implements MatchingRepositoryInterface
                     ->where('users.emp_no', '=', 'qa')
                     ->whereIn('qa_tasks.qa_id', $qaIdList)
                     ->where('tasks.task_size', $taskSize)
-                    ->select('users.id', 'users.firstname', 'users.lastname', 'qa_tasks.task_id', 'qa_tasks.qa_id', DB::raw('COUNT(*) AS total_task'))
-                    ->groupBy('qa_tasks.task_id', 'qa_tasks.qa_id', 'users.id', 'users.firstname', 'users.lastname')
+                    ->select('users.id', 'users.firstname', 'users.lastname', 'qa_tasks.qa_id', DB::raw('COUNT(*) AS total_task'))
+                    ->groupBy('qa_tasks.qa_id', 'users.id', 'users.firstname', 'users.lastname')
                     ->orderBy('total_task', 'DESC')
                     ->get()
                     ->toArray();
+//                dd(DB::getQueryLog());
                 if (!$result) {
                     return $qaList;
                 } else {
