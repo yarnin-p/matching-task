@@ -200,7 +200,7 @@ class MatchingRepository implements MatchingRepositoryInterface
     /**
      * @param $qaList
      * @param $selectedTaskSize
-     * @return false
+     * @return array|false
      */
     public function checkDidMaxTask($qaList, $selectedTaskSize)
     {
@@ -219,16 +219,21 @@ class MatchingRepository implements MatchingRepositoryInterface
                     $qaIdList[$key] = $qaRow->id;
                 }
 
-                foreach ($qaList as $key => $qaRow) {
-                    DB::table('qa_tasks')
-                        ->join('tasks', 'qa_tasks.task_id', '=', 'tasks.id')
-                        ->whereIn('qa_tasks.qa_id', $qaIdList)
-                        ->where('tasks.task_size', $taskSize)
-                        ->select('qa_tasks.task_id', 'qa_tasks.qa_id', DB::raw('COUNT(*) AS total_task'))
-                        ->groupBy('qa_tasks.task_id', 'qa_tasks.qa_id')
-                        ->orderBy('total_task', 'DESC')
-                        ->get()
-                        ->toArray();
+                $result = DB::table('qa_tasks')
+                    ->join('tasks', 'qa_tasks.task_id', '=', 'tasks.id')
+                    ->join('users', 'users.id', '=', 'qa_tasks.qa_id')
+                    ->where('users.emp_no', '=', 'qa')
+                    ->whereIn('qa_tasks.qa_id', $qaIdList)
+                    ->where('tasks.task_size', $taskSize)
+                    ->select('users.id', 'users.firstname', 'users.lastname', 'qa_tasks.task_id', 'qa_tasks.qa_id', DB::raw('COUNT(*) AS total_task'))
+                    ->groupBy('qa_tasks.task_id', 'qa_tasks.qa_id', 'users.id', 'users.firstname', 'users.lastname')
+                    ->orderBy('total_task', 'DESC')
+                    ->get()
+                    ->toArray();
+                if (!$result) {
+                    return $qaList;
+                } else {
+                    return $result;
                 }
             }
 
