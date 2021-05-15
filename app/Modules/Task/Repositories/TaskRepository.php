@@ -60,14 +60,14 @@ class TaskRepository implements TaskRepositoryInterface
      * @param $projectId
      * @return false|mixed
      */
-    public function getAllTasksProcessByProject(Request $request, $projectId)
+    public function getAllTasksOpenByProject(Request $request, $projectId)
     {
         try {
             return $this->taskModel::join('projects', 'tasks.project_id', '=', 'projects.id')
                 ->select('tasks.*', 'projects.project_name')
                 ->where('tasks.project_id', $projectId)
                 ->whereDate('tasks.end_date', '>', date('Y-m-d'))
-                ->where('tasks.status', 'process')
+                ->where('tasks.status', 'open')
                 ->get()
                 ->toArray();
         } catch (\Exception $e) {

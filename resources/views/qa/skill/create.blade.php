@@ -50,6 +50,7 @@
                                                         <div class="controls">
                                                             <label for="skills">Skills</label>
                                                             <select name="skills[]" id="skills" multiple class="form-control">
+                                                                <option value=""></option>
                                                                 @foreach($skills as $skill)
                                                                     <option value="{{ $skill->id }}">{{ $skill->skill_name }}</option>
                                                                 @endforeach
@@ -81,7 +82,10 @@
 @section('script')
     <script>
         $(document).ready(function () {
-            $('#skills').select2();
+            $('#skills').select2({
+                placeholder: '-- Please select skill --',
+                width: '100%'
+            });
 
             $('.btn-skill-add').on('click',function(){
                 $('#skill-add-form').submit();

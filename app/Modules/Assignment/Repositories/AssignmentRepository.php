@@ -35,11 +35,19 @@ class AssignmentRepository implements AssignmentRepositoryInterface
     {
         try {
             $userData = Session::get('user_data');
+
+            if ($userData->emp_no == 'qa') {
+
+            }
+
             return DB::table('qa_tasks')
                 ->join('tasks', 'qa_tasks.task_id', '=', 'tasks.id')
-                ->where('qa_tasks.qa_id', '=', $userData->id)
-                ->where('tasks.status', '=', 'process')
-                ->select('tasks.*')
+                ->join('users', 'qa_tasks.qa_id', '=', 'users.id')
+                ->where(function ($query) use ($userData) {
+                    if ($userData->emp_no == 'qa') {
+                        $query->where('qa_tasks.qa_id', '=', $userData->id)->where('tasks.status', '=', 'process');
+                    }
+                })->select('tasks.*', 'users.firstname', 'users.lastname')
                 ->get()
                 ->toArray();
         } catch (\Exception $e) {
@@ -52,7 +60,8 @@ class AssignmentRepository implements AssignmentRepositoryInterface
      * @param Request $request
      * @return array|false|mixed
      */
-    public function getAllAssignmentTasksHistory(Request $request) {
+    public function getAllAssignmentTasksHistory(Request $request)
+    {
         try {
             return DB::table('qa_tasks')
                 ->join('tasks', 'qa_tasks.task_id', '=', 'tasks.id')

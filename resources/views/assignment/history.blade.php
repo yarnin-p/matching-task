@@ -56,7 +56,7 @@
                                                         <td>{{ $result->task_name }}</td>
                                                         <td>{{ $result->start_date.' - '. $result->end_date }}</td>
                                                         <td>{{ $result->updated_at }}</td>
-                                                        <td></td>
+                                                        <td><span>-</span></td>
                                                     </tr>
                                                 @empty
                                                 @endforelse

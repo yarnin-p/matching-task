@@ -50,7 +50,7 @@ interface TaskRepositoryInterface
      * @param $projectId
      * @return mixed
      */
-    public function getAllTasksProcessByProject(Request $request, $projectId);
+    public function getAllTasksOpenByProject(Request $request, $projectId);
 
     /**
      * @return mixed

@@ -35,8 +35,8 @@
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between">
                                     <h4 class="card-title">Matching</h4>
-                                    <a href="{{ url('matching/history') }}"
-                                       class="btn btn-sm btn-primary">Matching History</a>
+{{--                                    <a href="{{ url('matching/history') }}"--}}
+{{--                                       class="btn btn-sm btn-primary">Matching History</a>--}}
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
@@ -89,10 +89,10 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <div class="controls">
-                                                        <label for="task_size">Work experiences</label>
+                                                        <label for="task_size">Work experiences (year)</label>
                                                         <input type="number" class="form-control"
                                                                placeholder="Work experiences"
-                                                               value="1"
+                                                               value="0"
                                                                oninput="return isNumberKey(event)"
                                                                name="work_experiences" id="work_experiences">
                                                     </div>

@@ -21,7 +21,8 @@ class QAController extends Controller
 
     public function __construct()
     {
-
+        DB::enableQueryLog();
+//        var_dump(DB::getQueryLog());exit();
     }
 
     public function index(Request $request)
@@ -29,11 +30,11 @@ class QAController extends Controller
         $user = $request->session()->get('user_data');
 
         $experiences = QAExperiencesModel::where('user_id', $user->id)->get();
-        $skills = QASkillsModel::leftJoin('skills', 'skills.id', 'qa_skills.skill_id')
+        $skills = QASkillsModel::join('skills', 'skills.id', 'qa_skills.skill_id')
                             ->select('qa_skills.id as id', "skills.id as skill_id", "skills.skill_name")
                             ->where('qa_skills.user_id', $user->id)
+                            ->whereNull('skills.deleted_at')
                             ->get();
-
         return view('qa.index', compact('experiences', 'skills'));
     }
 }

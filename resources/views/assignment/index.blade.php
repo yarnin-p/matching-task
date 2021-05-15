@@ -7,6 +7,11 @@
 
 
 @section('content')
+
+    @php
+        $userData = \Illuminate\Support\Facades\Session::get('user_data');
+    @endphp
+
     <!-- BEGIN: Content-->
     <div class="app-content content">
         <div class="content-overlay"></div>
@@ -35,8 +40,10 @@
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between">
                                     <h4 class="card-title">Task assigned</h4>
-                                    <a href="{{ url('assignment/history/complete') }}"
-                                       class="btn btn-sm btn-primary">History success tasks</a>
+                                    @if($userData->emp_no == 'qa')
+                                        <a href="{{ url('assignment/history/complete') }}"
+                                           class="btn btn-sm btn-primary">History success tasks</a>
+                                    @endif
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
@@ -45,6 +52,10 @@
                                                 <thead>
                                                 <tr>
                                                     <th>Tasks</th>
+                                                    @if ($userData->emp_no == 'sa')
+                                                        <th>Responsible person</th>
+                                                    @endif
+                                                    <th>Status</th>
                                                     <th>Start date - End date</th>
                                                     <th>Operations</th>
                                                 </tr>
@@ -54,15 +65,30 @@
                                                     <tr class="{{ $resultTask->end_date < date('Y-m-d H:i:s') ? 'bg-danger' : '' }}">
                                                         <td class="{{ $resultTask->end_date < date('Y-m-d H:i:s') ? 'text-white' : '' }}">
                                                             {{ $resultTask->task_name }}</td>
+                                                        @if ($userData->emp_no == 'sa')
+                                                            <td class="{{ $resultTask->end_date < date('Y-m-d H:i:s') ? 'text-white' : '' }}">
+                                                                {{ $resultTask->firstname.' '. $resultTask->lastname }}
+                                                            </td>
+                                                        @endif
+                                                        <td class="{{ $resultTask->end_date < date('Y-m-d H:i:s') ? 'text-white' : '' }}">
+                                                            <span
+                                                                class="badge {{ $resultTask->status == 'process' ? 'badge-warning' : 'badge-success' }}">
+                                                                {{ $resultTask->status }}
+                                                            </span>
+                                                        </td>
                                                         <td class="{{ $resultTask->end_date < date('Y-m-d H:i:s') ? 'text-white' : '' }}">
                                                             {{ $resultTask->start_date.' - '. $resultTask->end_date }}
                                                         </td>
                                                         <td>
-                                                            <button type="button"
-                                                                    onclick="sendTask('{{ $resultTask->id }}');"
-                                                                    class="btn btn-success btn-sm">
-                                                                End Task
-                                                            </button>
+                                                            @if ($userData->emp_no == 'qa')
+                                                                <button type="button"
+                                                                        onclick="sendTask('{{ $resultTask->id }}');"
+                                                                        class="btn btn-success btn-sm">
+                                                                    End Task
+                                                                </button>
+                                                            @else
+                                                                <span>-</span>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @empty
@@ -72,6 +98,10 @@
                                                 <tfoot>
                                                 <tr>
                                                     <th>Tasks</th>
+                                                    @if ($userData->emp_no == 'sa')
+                                                        <th>Responsible person</th>
+                                                    @endif
+                                                    <th>Status</th>
                                                     <th>Start date - End date</th>
                                                     <th>Operations</th>
                                                 </tr>

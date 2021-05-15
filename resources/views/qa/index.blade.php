@@ -45,6 +45,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th>Skill</th>
+                                                    <th>Description</th>
                                                     <th>Operations</th>
                                                 </tr>
                                                 </thead>
@@ -52,6 +53,7 @@
                                                     @foreach($skills as $skill)
                                                         <tr>
                                                             <td>{{ $skill->skill_name }}</td>
+                                                            <td>{{ $skill->description }}</td>
                                                             <td>
                                                                 <button type="button" class="btn btn-danger btn-sm" onclick="deleteSkill('{{ $skill->id }}')">
                                                                     <i class="fas fa-trash top-0"></i>
@@ -63,6 +65,7 @@
                                                 <tfoot>
                                                 <tr>
                                                     <th>Skill</th>
+                                                    <th>Description</th>
                                                     <th>Operations</th>
                                                 </tr>
                                                 </tfoot>

@@ -180,6 +180,8 @@ class MatchingRepository implements MatchingRepositoryInterface
             $input['status'] = 'process';
             $input['created_at'] = date('Y-m-d H:i:s');
 
+            $this->taskModel::where('id', $input['task_id'])->update(['status' => 'process']);
+
             return $this->qaTaskModel::create($input);
         } catch (\Exception $e) {
             Log::error('MatchingRepository@saveMatching: [' . $e->getCode() . '] ' . $e->getMessage());
