@@ -68,7 +68,12 @@ class MatchingRepository implements MatchingRepositoryInterface
 
             $isExpMatched = $this->getExpQa($qaList, $experience);
             $isPassed = $this->checkQaQualifiedTasks($isExpMatched, $taskSize->task_size);
-            return $this->checkQaAvailable($isPassed);
+            $isAvailable = $this->checkQaAvailable($isPassed);
+            $isDidMaxTask = $this->checkDidMaxTask($isAvailable, $taskSize->task_size);
+
+            return;
+
+
         } catch (Exception $e) {
             Log::error('MatchingRepository@getAllProjects: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
@@ -133,7 +138,6 @@ class MatchingRepository implements MatchingRepositoryInterface
                             ->where('tasks.task_size', '=', $taskSize)
                             ->get()
                             ->toArray();
-                        dd(DB::getQueryLog());
                         if (count($isPassed) < $qualifiedTaskNum) {
                             unset($qaList[$key]);
                         }
@@ -189,6 +193,48 @@ class MatchingRepository implements MatchingRepositoryInterface
             return $this->qaTaskModel::create($input);
         } catch (\Exception $e) {
             Log::error('MatchingRepository@saveMatching: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
+    }
+
+    /**
+     * @param $qaList
+     * @param $selectedTaskSize
+     * @return false
+     */
+    public function checkDidMaxTask($qaList, $selectedTaskSize)
+    {
+        try {
+
+            $taskSize = 'S';
+            if ($selectedTaskSize == 'L') {
+                $taskSize = 'M';
+            } else if ($selectedTaskSize == 'XL') {
+                $taskSize = 'L';
+            }
+
+
+            if (count($qaList) > 0) {
+                foreach ($qaList as $key => $qaRow) {
+                    $qaIdList[$key] = $qaRow->id;
+                }
+
+                foreach ($qaList as $key => $qaRow) {
+                    DB::table('qa_tasks')
+                        ->join('tasks', 'qa_tasks.task_id', '=', 'tasks.id')
+                        ->whereIn('qa_tasks.qa_id', $qaIdList)
+                        ->where('tasks.task_size', $taskSize)
+                        ->select('qa_tasks.task_id', 'qa_tasks.qa_id', DB::raw('COUNT(*) AS total_task'))
+                        ->groupBy('qa_tasks.task_id', 'qa_tasks.qa_id')
+                        ->orderBy('total_task', 'DESC')
+                        ->get()
+                        ->toArray();
+                }
+            }
+
+            return $qaList;
+        } catch (\Exception $e) {
+            Log::error('MatchingRepository@checkDidMaxTask: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
         }
     }
