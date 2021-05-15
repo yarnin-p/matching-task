@@ -227,7 +227,6 @@ class MatchingRepository implements MatchingRepositoryInterface
                     ->toArray();
 //                dd(DB::getQueryLog());
                 if (!$result) {
-                    dd($qaList);
                     return $qaList;
                 } else {
 

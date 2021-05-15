@@ -67,7 +67,7 @@ class UserRepository implements UserRepositoryInterface
     {
         try {
             $input['firstname'] = trim($request->input('firstname'));
-            $input['lastname'] = trim($request->input('firstname'));
+            $input['lastname'] = trim($request->input('lastname'));
             $input['email'] = trim($request->input('email'));
             $input['password'] = trim($request->input('password'));
             $input['emp_no'] = trim($request->input('emp_no'));
