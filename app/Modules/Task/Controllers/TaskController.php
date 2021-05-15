@@ -98,7 +98,7 @@ class TaskController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $projectId, $taskId)
     {
         try {
             $validatorTaskData = Validator::make($request->all(), [
@@ -106,11 +106,11 @@ class TaskController extends Controller
                 'period_date' => 'required'
             ]);
 
-            if ($validatorTaskData->fails() || !$id) {
+            if ($validatorTaskData->fails() || !$projectId || !$taskId) {
                 return responseError(422, 422, $validatorTaskData->errors(), []);
             }
 
-            $isTaskUpdated = $this->taskRepo->updateTask($id, $request);
+            $isTaskUpdated = $this->taskRepo->updateTask($taskId, $request);
             if ($isTaskUpdated) {
                 return responseSuccess(201, 201, 'Updated', []);
             }

@@ -47,6 +47,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th>Task name</th>
+                                                    <th>Task size</th>
                                                     <th>Description</th>
                                                     <th>Start date</th>
                                                     <th>End date</th>
@@ -57,6 +58,7 @@
                                                 @foreach($results['tasks'] as $task)
                                                     <tr>
                                                         <td>{{ $task['task_name'] }}</td>
+                                                        <td>{{ $task['task_size'] }}</td>
                                                         <td>{{ $task['description'] }}</td>
                                                         <td>{{ defaultDateFormat($task['start_date']) }}</td>
                                                         <td>{{ defaultDateFormat($task['end_date']) }}</td>
@@ -76,6 +78,7 @@
                                                 <tfoot>
                                                 <tr>
                                                     <th>Task name</th>
+                                                    <th>Task size</th>
                                                     <th>Description</th>
                                                     <th>Start date</th>
                                                     <th>End date</th>

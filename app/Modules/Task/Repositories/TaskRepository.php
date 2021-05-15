@@ -123,7 +123,7 @@ class TaskRepository implements TaskRepositoryInterface
     {
         try {
             $period_date = explode('-', $request->input('period_date'));
-            $task = $this->taskModel::find($id);
+            $task = $this->taskModel::where('id', $id)->first();
             $task->task_size = $request->input('task_size');
             $task->task_name = trim($request->input('task_name'));
             $task->description = $request->input('description') ? $request->input('description') : "";

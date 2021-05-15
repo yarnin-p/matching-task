@@ -57,8 +57,11 @@ class MatchingRepository implements MatchingRepositoryInterface
             $qaList = DB::table('users')
                 ->join('qa_skills', 'users.id', '=', 'qa_skills.user_id')
                 ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
-                ->whereIn('qa_skills.skill_id', $skills)
-                ->where('user_roles.role_id', '=', $qaRole)
+                ->where(function ($query) use ($skills) {
+                    if ($skills) {
+                        $query->whereIn('qa_skills.skill_id', $skills);
+                    }
+                })->where('user_roles.role_id', '=', $qaRole)
                 ->select('users.*')
                 ->get()
                 ->toArray();
@@ -130,6 +133,7 @@ class MatchingRepository implements MatchingRepositoryInterface
                             ->where('tasks.task_size', '=', $taskSize)
                             ->get()
                             ->toArray();
+                        dd(DB::getQueryLog());
                         if (count($isPassed) < $qualifiedTaskNum) {
                             unset($qaList[$key]);
                         }
