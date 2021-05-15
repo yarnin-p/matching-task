@@ -31,7 +31,7 @@ class QAController extends Controller
 
         $experiences = QAExperiencesModel::where('user_id', $user->id)->get();
         $skills = QASkillsModel::join('skills', 'skills.id', 'qa_skills.skill_id')
-                            ->select('qa_skills.id as id', "skills.id as skill_id", "skills.skill_name")
+                            ->select('qa_skills.id as id', "skills.id as skill_id", "skills.skill_name", "skills.description")
                             ->where('qa_skills.user_id', $user->id)
                             ->whereNull('skills.deleted_at')
                             ->get();

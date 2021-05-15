@@ -2,6 +2,7 @@
 
 namespace App\Modules\Skill\Controllers;
 
+use App\Models\QASkillsModel;
 use App\Modules\Project\Repositories\ProjectRepository;
 use App\Modules\Skill\Repositories\SkillRepository;
 use App\Modules\Task\Repositories\TaskRepository;
@@ -115,6 +116,17 @@ class SkillController extends Controller
         } catch (\Exception $e) {
             Log::error('SkillController@delete: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
+        }
+    }
+
+    public function detail($id)
+    {
+        try {
+            $result = $this->skillRepo->getSkill($id);
+            return responseSuccess(200, 200, 'Successfully', $result);
+        } catch (\Exception $e) {
+            Log::error('SkillController@detail: [' . $e->getCode() . '] ' . $e->getMessage());
+            return responseError(500, 500, 'Something went wrong!', []);
         }
     }
 }

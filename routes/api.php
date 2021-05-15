@@ -66,7 +66,9 @@ Route::group([
     Route::post('/add', '\App\Modules\Skill\Controllers\SkillController@create');
     Route::post('/{id}/edit', '\App\Modules\Skill\Controllers\SkillController@update');
     Route::post('/{id}/delete', '\App\Modules\Skill\Controllers\SkillController@delete');
+    Route::get('/detail/{id}', '\App\Modules\Skill\Controllers\SkillController@detail');
 });
+
 
 Route::group([
     'middlewares' => ['web'],

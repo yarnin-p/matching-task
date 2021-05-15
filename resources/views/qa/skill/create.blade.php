@@ -42,26 +42,43 @@
                                 <div class="card-content">
                                     <div class="card-body">
                                         <p class="mt-1">Add Skill</p>
-                                        <form id="skill-add-form" class="form-horizontal" method="post" enctype="multipart/form-data" autocomplete="off" action="{{ url('qa/skill/edit') }}">
+                                        <form id="skill-add-form" class="form-horizontal" method="post"
+                                              enctype="multipart/form-data" autocomplete="off"
+                                              action="{{ url('qa/skill/edit') }}">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label for="skills">Skills</label>
-                                                            <select name="skills[]" id="skills" multiple class="form-control">
+                                                            <select name="skills" id="skills"
+                                                                    onchange="getSkillDescription(this);"
+                                                                    class="form-control">
                                                                 <option value=""></option>
                                                                 @foreach($skills as $skill)
-                                                                    <option value="{{ $skill->id }}">{{ $skill->skill_name }}</option>
+                                                                    <option
+                                                                        value="{{ $skill->id }}">{{ $skill->skill_name }}</option>
                                                                 @endforeach
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label for="skills">Description</label>
+                                                            <textarea name="description" id="description"
+                                                                      placeholder="Description"
+                                                                      readonly
+                                                                      class="form-control"
+                                                                      rows="5"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <a type="button" class="btn btn-danger"
                                                href="{{ url('qa') }}">Cancel</a>
-                                            <button type="button" class="btn btn-primary btn-skill-add">Save </button>
+                                            <button type="button" class="btn btn-primary btn-skill-add">Save</button>
                                         </form>
                                     </div>
                                 </div>
@@ -87,32 +104,30 @@
                 width: '100%'
             });
 
-            $('.btn-skill-add').on('click',function(){
+            $('.btn-skill-add').on('click', function () {
                 $('#skill-add-form').submit();
             });
         });
 
 
-        {{--async function createSkill() {--}}
-        {{--    let data = {--}}
-        {{--        skill_name: $('#skill_name').val(),--}}
-        {{--        description: $('#description').val(),--}}
-        {{--    }--}}
-        {{--    let response = await postData('{{ url('api/v1/skills/add') }}', data, 'POST')--}}
-        {{--    if (response.success) {--}}
-        {{--        location.href = '{{ url('skills/') }}';--}}
-        {{--    } else {--}}
-        {{--        Swal.fire({--}}
-        {{--            title: 'Skills',--}}
-        {{--            text: "Create skill failed!: " + JSON.stringify(response.message),--}}
-        {{--            icon: 'warning',--}}
-        {{--            showCancelButton: false,--}}
-        {{--            confirmButtonColor: '#3085d6',--}}
-        {{--            cancelButtonColor: '#d33',--}}
-        {{--            confirmButtonText: 'Ok'--}}
-        {{--        });--}}
-        {{--    }--}}
-        {{--}--}}
+        async function getSkillDescription(obj) {
+            let response = await getData('{{ url('api/v1/skills/detail') }}/' + obj.value, {}, 'GET')
+            if (response.success) {
+                if (response.data) {
+                    $('#description').val(response.data.description)
+                }
+            } else {
+                Swal.fire({
+                    title: 'Skills',
+                    text: "Get skill detail failed: " + JSON.stringify(response.message),
+                    icon: 'warning',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok'
+                });
+            }
+        }
 
     </script>
 
