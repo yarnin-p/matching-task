@@ -68,7 +68,10 @@ class MatchingRepository implements MatchingRepositoryInterface
             $isExpMatched = $this->getExpQa($qaList, $experience);
             $isPassed = $this->checkQaQualifiedTasks($isExpMatched, $taskSize->task_size);
             $isAvailable = $this->checkQaAvailable($isPassed);
-            return $this->checkDidMaxTask($isAvailable, $taskSize->task_size);
+            if ($experience != 0) {
+                return $this->checkDidMaxTask($isAvailable, $taskSize->task_size);
+            }
+            return $isAvailable;
         } catch (Exception $e) {
             Log::error('MatchingRepository@getAllProjects: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
