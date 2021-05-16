@@ -35,70 +35,72 @@
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between">
                                     <h4 class="card-title">Matching</h4>
-{{--                                    <a href="{{ url('matching/history') }}"--}}
-{{--                                       class="btn btn-sm btn-primary">Matching History</a>--}}
+                                    {{--                                    <a href="{{ url('matching/history') }}"--}}
+                                    {{--                                       class="btn btn-sm btn-primary">Matching History</a>--}}
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <div class="controls">
-                                                        <label for="projects">Projects</label>
-                                                        <select name="projects" id="projects"
-                                                                onchange="getTaskBySelectedProject(this);"
-                                                                class="form-control">
-                                                            <option value=""></option>
-                                                            @forelse($projects as $project)
-                                                                <option
-                                                                    value="{{ $project['id'] }}">{{ $project['project_name'] }}</option>
-                                                            @empty
-                                                                <option value="">No project found!</option>
-                                                            @endforelse
-                                                        </select>
+                                        <form id="form-criteria">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label for="projects">Projects</label>
+                                                            <select name="projects" id="projects"
+                                                                    onchange="getTaskBySelectedProject(this);"
+                                                                    class="form-control">
+                                                                <option value=""></option>
+                                                                @forelse($projects as $project)
+                                                                    <option
+                                                                        value="{{ $project['id'] }}">{{ $project['project_name'] }}</option>
+                                                                @empty
+                                                                    <option value="">No project found!</option>
+                                                                @endforelse
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label for="tasks">Tasks</label>
+                                                            <select name="tasks" id="tasks" class="form-control">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label for="skills">Skills</label>
+                                                            <select name="skills[]" id="skills" multiple
+                                                                    class="form-control">
+                                                                <option value=""></option>
+                                                                @forelse($skills as $skill)
+                                                                    <option
+                                                                        value="{{ $skill['id'] }}">{{ $skill['skill_name'] }}</option>
+                                                                @empty
+                                                                @endforelse
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label for="task_size">Work experiences (year)</label>
+                                                            <input type="number" class="form-control"
+                                                                   placeholder="Work experiences"
+                                                                   value="0"
+                                                                   oninput="return isNumberKey(event)"
+                                                                   name="work_experiences" id="work_experiences">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <div class="controls">
-                                                        <label for="tasks">Tasks</label>
-                                                        <select name="tasks" id="tasks" class="form-control">
-                                                            <option value=""></option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <div class="controls">
-                                                        <label for="skills">Skills</label>
-                                                        <select name="skills[]" id="skills" multiple
-                                                                class="form-control">
-                                                            <option value=""></option>
-                                                            @forelse($skills as $skill)
-                                                                <option
-                                                                    value="{{ $skill['id'] }}">{{ $skill['skill_name'] }}</option>
-                                                            @empty
-                                                            @endforelse
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <div class="controls">
-                                                        <label for="task_size">Work experiences (year)</label>
-                                                        <input type="number" class="form-control"
-                                                               placeholder="Work experiences"
-                                                               value="0"
-                                                               oninput="return isNumberKey(event)"
-                                                               name="work_experiences" id="work_experiences">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </form>
                                         <button type="button" onclick="search();"
                                                 class="btn btn-primary mb-3">Match
                                         </button>
@@ -200,9 +202,9 @@
                         elem += `<input type="radio" class="person_radio"
                                                value="${row.id}"
                                                name="matching_person"
-                                                onchange="checkSelectedQa();"
-                                               id="radio1">
-                                            <label for="radio1"></label>`;
+                                               onchange="checkSelectedQa();"
+                                               id="radio${row.id}">
+                                            <label for="radio${row.id}"></label>`;
                         elem += `</div>`;
                         elem += `</fieldset>`;
                         elem += `</td>`;
@@ -237,28 +239,31 @@
 
 
         async function getTaskBySelectedProject(obj) {
-            let project_id = obj.value;
-            let elem = '';
-            let response = await getData('{{ url('api/v1/tasks/project') }}' + '/' + project_id, [], 'GET');
-            if (response.success) {
-                if (response.data.length > 0) {
-                    [...response.data].map((row, index) => {
-                        elem += `<option value='${row.id}'>${row.task_name}</option>`;
-                    });
+            if (obj.value) {
+                console.log(obj.value)
+                let project_id = obj.value;
+                let elem = '';
+                let response = await getData('{{ url('api/v1/tasks/project') }}' + '/' + project_id, [], 'GET');
+                if (response.success) {
+                    if (response.data.length > 0) {
+                        [...response.data].map((row, index) => {
+                            elem += `<option value='${row.id}'>${row.task_name}</option>`;
+                        });
+                    } else {
+                        elem += `<option value='' disabled>No task found!</option>`;
+                    }
+                    $('#tasks').empty().append(elem);
                 } else {
-                    elem += `<option value='' disabled>No task found!</option>`;
+                    Swal.fire({
+                        title: 'Matching',
+                        text: "Something went wrong!",
+                        icon: 'warning',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok'
+                    })
                 }
-                $('#tasks').empty().append(elem);
-            } else {
-                Swal.fire({
-                    title: 'Matching',
-                    text: "Something went wrong!",
-                    icon: 'warning',
-                    showCancelButton: false,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ok'
-                })
             }
         }
 
@@ -305,6 +310,9 @@
         function resetMatching() {
             $('#qa_list').empty().append('<tr><td colspan="2" class="text-center">No data found!</td></tr>');
             $('#submit_matching').prop('disabled', true);
+            $('#skills').val(null).trigger('change');
+            $('#projects').val(null).trigger('change');
+            $('#tasks').empty().append('');
         }
 
     </script>
