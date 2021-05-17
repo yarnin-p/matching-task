@@ -116,8 +116,8 @@ class MatchingRepository implements MatchingRepositoryInterface
                 foreach ($qaList as $key => $qaRow) {
                     $isHoldTask = DB::table('qa_tasks')
                         ->where('qa_id', '=', $qaRow->id)
+                        ->where('status','=', 'process')
                         ->first();
-
                     if ($isHoldTask) {
                         unset($qaList[$key]);
                     }
