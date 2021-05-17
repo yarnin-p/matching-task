@@ -5,6 +5,7 @@ namespace App\Modules\Matching\Repositories;
 use App\Models\QATasksModel;
 use App\Models\TaskModel;
 use App\Modules\Matching\Interfaces\MatchingRepositoryInterface;
+use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -20,16 +21,18 @@ class MatchingRepository implements MatchingRepositoryInterface
     /**
      * @var UserModel
      */
-    private $projectModel, $qaTaskModel, $taskModel;
+    private $projectModel, $qaTaskModel, $taskModel, $userModel;
 
     /**
      * ProjectRepository constructor.
      * @param ProjectModel $projectModel
      */
-    public function __construct(ProjectModel $projectModel, QATasksModel $qaTaskModel, TaskModel $taskModel)
+    public function __construct(ProjectModel $projectModel, QATasksModel $qaTaskModel,
+                                TaskModel $taskModel, UserModel $userModel)
     {
         DB::enableQueryLog();
 //        var_dump(DB::getQueryLog());exit();
+        $this->userModel = $userModel;
         $this->projectModel = $projectModel;
         $this->taskModel = $taskModel;
         $this->qaTaskModel = $qaTaskModel;
@@ -45,28 +48,17 @@ class MatchingRepository implements MatchingRepositoryInterface
             $taskId = $request->input('task_id');
             $taskSize = $this->taskModel::where('id', $taskId)->select('task_size')->first();
             $skills = $request->input('skills');
-            $experience = (string)$request->input('experience');
+            $experience = (int)$request->input('experience');
 
-            if (substr($experience, 0, 1) == 0) {
-                $experience = substr($experience, 1);
+            $qaList = $this->userModel::where('emp_no', 'qa');
+            if (count($skills)) {
+                $qaList = $qaList->whereHas('userHasSkills', function ($query_has_skills) use ($skills) {
+                    $query_has_skills->whereIn('skill_id', $skills);
+                });
             }
-
-            $qaRole = DB::table('roles')->where('role_name', '=', 'qa')->first();
-
-            $qaRole = $qaRole ? $qaRole->id : 2;
-            $qaList = DB::table('users')
-                ->leftJoin('qa_skills', 'users.id', '=', 'qa_skills.user_id')
-                ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
-                ->where(function ($query) use ($skills) {
-                    if ($skills) {
-                        $query->whereIn('qa_skills.skill_id', $skills);
-                    }
-                })->where('user_roles.role_id', '=', $qaRole)
-                ->select('users.*')
-                ->get()
-                ->toArray();
-
-            $isExpMatched = $this->getExpQa($qaList, $experience);
+            $qaList = $qaList->get();
+            $isNotHoldTask = $this->checkHoldTask($qaList);
+            $isExpMatched = $this->getExpQa($isNotHoldTask, $experience);
             $isPassed = $this->checkQaQualifiedTasks($isExpMatched, $taskSize->task_size);
             $isAvailable = $this->checkQaAvailable($isPassed);
             if ($experience != 0) {
@@ -82,12 +74,12 @@ class MatchingRepository implements MatchingRepositoryInterface
     /**
      * @param $qaList
      * @param $experience
-     * @return false
+     * @return array|false
      */
     public function getExpQa($qaList, $experience)
     {
         try {
-            if (count($qaList) > 0) {
+            if (count($qaList)) {
                 foreach ($qaList as $key => $qaRow) {
                     $totalExp = 0;
                     $workExps = DB::table('qa_experiences')
@@ -105,6 +97,7 @@ class MatchingRepository implements MatchingRepositoryInterface
                     }
                 }
             }
+
             return $qaList;
         } catch (Exception $e) {
             Log::error('MatchingRepository@getExpQa: [' . $e->getCode() . '] ' . $e->getMessage());
@@ -112,11 +105,14 @@ class MatchingRepository implements MatchingRepositoryInterface
         }
     }
 
-
+    /**
+     * @param $qaList
+     * @return array|false
+     */
     public function checkHoldTask($qaList)
     {
         try {
-            if (count($qaList) > 0) {
+            if (count($qaList)) {
                 foreach ($qaList as $key => $qaRow) {
                     $isHoldTask = DB::table('qa_tasks')
                         ->where('qa_id', '=', $qaRow->id)
@@ -127,6 +123,7 @@ class MatchingRepository implements MatchingRepositoryInterface
                     }
                 }
             }
+
             return $qaList;
         } catch (Exception $e) {
             Log::error('MatchingRepository@checkHoldTask: [' . $e->getCode() . '] ' . $e->getMessage());
@@ -136,7 +133,7 @@ class MatchingRepository implements MatchingRepositoryInterface
 
     /**
      * @param $qaList
-     * @param $taskSize
+     * @param $selectedTaskSize
      * @return false|mixed
      */
     public function checkQaQualifiedTasks($qaList, $selectedTaskSize)
@@ -150,7 +147,7 @@ class MatchingRepository implements MatchingRepositoryInterface
                 $taskSize = 'L';
             }
 
-            if (count($qaList) > 0) {
+            if (count($qaList)) {
                 foreach ($qaList as $key => $qaRow) {
                     if ($selectedTaskSize !== 'S') {
                         $isPassed = $this->qaTaskModel::join('tasks', 'qa_tasks.task_id', '=', 'tasks.id')
@@ -188,13 +185,13 @@ class MatchingRepository implements MatchingRepositoryInterface
                         ->whereDate('tasks.end_date', '<', date('Y-m-d'))
                         ->get()
                         ->toArray();
-                    if (count($isAvailable) > 0) {
+                    if (count($isAvailable)) {
                         unset($qaList[$key]);
                     }
                 }
             }
 
-            return $qaList;
+            return array_values($qaList->toArray());
         } catch (\Exception $e) {
             Log::error('MatchingRepository@checkQaAvailable: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
@@ -260,7 +257,7 @@ class MatchingRepository implements MatchingRepositoryInterface
                 }
             }
 
-            return $qaList;
+            return array_values($qaList->toArray());
         } catch (\Exception $e) {
             Log::error('MatchingRepository@checkDidMaxTask: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
