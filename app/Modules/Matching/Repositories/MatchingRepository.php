@@ -65,6 +65,7 @@ class MatchingRepository implements MatchingRepositoryInterface
                 ->select('users.*')
                 ->get()
                 ->toArray();
+
             $isExpMatched = $this->getExpQa($qaList, $experience);
             $isPassed = $this->checkQaQualifiedTasks($isExpMatched, $taskSize->task_size);
             $isAvailable = $this->checkQaAvailable($isPassed);
@@ -107,6 +108,28 @@ class MatchingRepository implements MatchingRepositoryInterface
             return $qaList;
         } catch (Exception $e) {
             Log::error('MatchingRepository@getExpQa: [' . $e->getCode() . '] ' . $e->getMessage());
+            return FALSE;
+        }
+    }
+
+
+    public function checkHoldTask($qaList)
+    {
+        try {
+            if (count($qaList) > 0) {
+                foreach ($qaList as $key => $qaRow) {
+                    $isHoldTask = DB::table('qa_tasks')
+                        ->where('qa_id', '=', $qaRow->id)
+                        ->first();
+
+                    if ($isHoldTask) {
+                        unset($qaList[$key]);
+                    }
+                }
+            }
+            return $qaList;
+        } catch (Exception $e) {
+            Log::error('MatchingRepository@checkHoldTask: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
         }
     }
