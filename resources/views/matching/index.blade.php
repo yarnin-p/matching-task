@@ -242,7 +242,7 @@
             if (obj.value) {
                 console.log(obj.value)
                 let project_id = obj.value;
-                let elem = '';
+                let elem = '<option></option>';
                 let response = await getData('{{ url('api/v1/tasks/project') }}' + '/' + project_id, [], 'GET');
                 if (response.success) {
                     if (response.data.length > 0) {
@@ -310,9 +310,9 @@
         function resetMatching() {
             $('#qa_list').empty().append('<tr><td colspan="2" class="text-center">No data found!</td></tr>');
             $('#submit_matching').prop('disabled', true);
-            $('#skills').val(null).trigger('change');
-            $('#projects').val(null).trigger('change');
-            $('#tasks').empty().append('');
+            $('#skills').val([]).trigger('change');
+            $('#projects').val([]).trigger('change.select2');
+            $('#tasks').html('<option></option>');
         }
 
     </script>
