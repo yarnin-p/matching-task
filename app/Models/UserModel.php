@@ -43,4 +43,8 @@ class UserModel extends Model
     public function userRole(){
         return $this->hasMany('App\Models\UserRoleModel', 'user_id', 'id');
     }
+
+    public function userHasSkills(){
+        return $this->hasMany('App\Models\QASkillsModel','user_id','id');
+    }
 }

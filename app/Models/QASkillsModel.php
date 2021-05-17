@@ -37,4 +37,5 @@ class QASkillsModel extends Model
     ];
 
     const UPDATED_AT = null;
+
 }
