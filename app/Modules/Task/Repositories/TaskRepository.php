@@ -165,7 +165,6 @@ class TaskRepository implements TaskRepositoryInterface
             $this->taskModel::where('id', $taskId)->update(['status' => 'complete']);
             return TRUE;
         } catch (\Exception $e) {
-            dd($e->getMessage());
             Log::error('TaskRepository@deleteTask: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
         }

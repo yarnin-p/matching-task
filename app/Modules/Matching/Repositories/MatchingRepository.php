@@ -98,7 +98,6 @@ class MatchingRepository implements MatchingRepositoryInterface
                     }
                 }
             }
-
             $expList = [];
             foreach ($qaList as $ekey => $qaRow) {
                 array_push($expList, $qaRow->exp);
@@ -106,11 +105,10 @@ class MatchingRepository implements MatchingRepositoryInterface
             $expMax = max($expList);
 
             foreach ($qaList as $fkey => $qaRow) {
-               if ($qaRow->exp != $expMax) {
-                   unset($qaList[$fkey]);
-               }
+                if ($qaRow->exp != $expMax) {
+                    unset($qaList[$fkey]);
+                }
             }
-
             return $qaList;
         } catch (Exception $e) {
             Log::error('MatchingRepository@getExpQa: [' . $e->getCode() . '] ' . $e->getMessage());
@@ -236,7 +234,6 @@ class MatchingRepository implements MatchingRepositoryInterface
     public function checkDidMaxTask($qaList, $selectedTaskSize)
     {
         try {
-
             $taskSize = 'S';
             if ($selectedTaskSize == 'L') {
                 $taskSize = 'M';
@@ -244,10 +241,9 @@ class MatchingRepository implements MatchingRepositoryInterface
                 $taskSize = 'L';
             }
 
-
             if (count($qaList) > 0) {
                 foreach ($qaList as $key => $qaRow) {
-                    $qaIdList[$key] = $qaRow->id;
+                    $qaIdList[$key] = $qaRow['id'];
                 }
 
                 $result = DB::table('qa_tasks')
@@ -261,17 +257,14 @@ class MatchingRepository implements MatchingRepositoryInterface
                     ->orderBy('total_task', 'DESC')
                     ->get()
                     ->toArray();
-//                dd(DB::getQueryLog());
                 if (!$result) {
-                    return $qaList;
+                    return $qaList->toArray();
                 } else {
-
                     return $result;
                 }
             }
-
-            return array_values($qaList->toArray());
-        } catch (\Exception $e) {
+            return $qaList;
+        } catch (Exception $e) {
             Log::error('MatchingRepository@checkDidMaxTask: [' . $e->getCode() . '] ' . $e->getMessage());
             return FALSE;
         }
