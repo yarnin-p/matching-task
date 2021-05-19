@@ -102,13 +102,16 @@ class MatchingRepository implements MatchingRepositoryInterface
             foreach ($qaList as $ekey => $qaRow) {
                 array_push($expList, $qaRow->exp);
             }
-            $expMax = max($expList);
 
-            foreach ($qaList as $fkey => $qaRow) {
-                if ($qaRow->exp != $expMax) {
-                    unset($qaList[$fkey]);
+            if($expList) {
+                $expMax = max($expList);
+                foreach ($qaList as $fkey => $qaRow) {
+                    if ($qaRow->exp != $expMax) {
+                        unset($qaList[$fkey]);
+                    }
                 }
             }
+            
             return $qaList;
         } catch (Exception $e) {
             Log::error('MatchingRepository@getExpQa: [' . $e->getCode() . '] ' . $e->getMessage());

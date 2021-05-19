@@ -178,7 +178,7 @@ class TaskRepository implements TaskRepositoryInterface
                 ->join('tasks', 'qa_tasks.task_id', '=', 'tasks.id')
                 ->where('qa_tasks.qa_id', '=', $userData->id)
                 ->where('tasks.status', '=', 'complete')
-                ->select('tasks.task_name', 'tasks.start_date', 'tasks.end_date', 'qa_tasks.updated_at')
+                ->select('tasks.task_name', 'tasks.description', 'tasks.start_date', 'tasks.end_date', 'qa_tasks.updated_at')
                 ->get()
                 ->toArray();
         } catch (\Exception $e) {

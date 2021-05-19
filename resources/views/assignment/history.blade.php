@@ -45,6 +45,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th>Tasks</th>
+                                                    <th>Description</th>
                                                     <th>Start date - End date</th>
                                                     <th>Completed date</th>
                                                     <th>Operations</th>
@@ -54,6 +55,7 @@
                                                 @forelse($results as $result)
                                                     <tr>
                                                         <td>{{ $result->task_name }}</td>
+                                                        <td>{{ $result->description }}</td>
                                                         <td>{{ $result->start_date.' - '. $result->end_date }}</td>
                                                         <td>{{ $result->updated_at }}</td>
                                                         <td><span>-</span></td>
@@ -64,6 +66,7 @@
                                                 <tfoot>
                                                 <tr>
                                                     <th>Tasks</th>
+                                                    <th>Description</th>
                                                     <th>Start date - End date</th>
                                                     <th>Completed date</th>
                                                     <th>Operations</th>
