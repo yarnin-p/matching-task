@@ -40,7 +40,7 @@ Route::group([
     'prefix' => 'v1/projects'
 ], function () {
     Route::post('/add', '\App\Modules\Project\Controllers\ProjectController@create');
-    Route::post('/{id}/edit', '\App\Modules\Project\Controllers\ProjectController@update');
+    Route::post('/edit/{id}', '\App\Modules\Project\Controllers\ProjectController@update');
     Route::post('/{id}/delete/', '\App\Modules\Project\Controllers\ProjectController@delete');
 
     Route::post('/{projectId}/tasks/add', '\App\Modules\Task\Controllers\TaskController@create');

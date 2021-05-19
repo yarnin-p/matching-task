@@ -55,6 +55,7 @@
                                                     @if ($userData->emp_no == 'sa')
                                                         <th>Responsible person</th>
                                                     @endif
+                                                    <th>Description</th>
                                                     <th>Status</th>
                                                     <th>Start date - End date</th>
                                                     <th>Operations</th>
@@ -70,6 +71,7 @@
                                                                 {{ $resultTask->firstname.' '. $resultTask->lastname }}
                                                             </td>
                                                         @endif
+                                                        <td>{{ $resultTask->description }}</td>
                                                         <td class="{{ $resultTask->end_date < date('Y-m-d H:i:s') ? 'text-white' : '' }}">
                                                             <span
                                                                 class="badge {{ $resultTask->status == 'process' ? 'badge-warning' : 'badge-success' }}">
@@ -101,6 +103,7 @@
                                                     @if ($userData->emp_no == 'sa')
                                                         <th>Responsible person</th>
                                                     @endif
+                                                    <th>Description</th>
                                                     <th>Status</th>
                                                     <th>Start date - End date</th>
                                                     <th>Operations</th>
