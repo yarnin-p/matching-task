@@ -258,7 +258,7 @@ class MatchingRepository implements MatchingRepositoryInterface
                     ->get()
                     ->toArray();
                 if (!$result) {
-                    return $qaList->toArray();
+                    return $qaList;
                 } else {
                     return $result;
                 }
